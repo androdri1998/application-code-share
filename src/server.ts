@@ -2,10 +2,10 @@ import 'express-async-errors';
 import express from 'express';
 import helmet from 'helmet';
 
-import routes from './routes';
-import handleErrors from './middlewares/handle-errors';
-import DebugLogProvider from './providers/DebugLogProvider';
-import messages from './intl/messages/en-US';
+import routes from './modules/app/routes';
+import handleErrors from './modules/app/middlewares/handle-errors';
+import DebugLogProvider from './modules/app/providers/DebugLogProvider';
+import messages from './modules/app/intl/messages/en-US';
 
 const app = express();
 
