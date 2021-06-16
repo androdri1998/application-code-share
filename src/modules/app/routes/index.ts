@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { Router } from 'express';
 
 import userRoutes from '../../users/routes';
