@@ -5,7 +5,8 @@ const messages = {
   },
   keys: {
     logs: {
-      START_LOG: 'app:essential:start',
+      ESSENTIALS: 'app:essentials',
+      ERROR: 'app:essentials:error',
     },
   },
   logs: {
