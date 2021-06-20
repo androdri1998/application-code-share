@@ -1,4 +1,8 @@
 /* eslint-disable camelcase */
+import HTTPStatusCode from 'http-status-codes';
+
+import AppError from '../../app/errors/AppError';
+import messages from '../../app/intl/messages/en-US';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface ExecuteDTO {
@@ -39,6 +43,20 @@ class RegisterUserService {
     coverPhoto,
     birthDate,
   }: ExecuteDTO): Promise<ExecuteResponse> {
+    const userFoundByUsername = await this.usersRepository.FindUserByUsername({
+      username,
+    });
+    const userFoundByEmail = await this.usersRepository.FindUserByEmail({
+      email,
+    });
+
+    if (userFoundByUsername || userFoundByEmail) {
+      throw new AppError(
+        messages.errors.USER_ALREADY_EXISTS,
+        HTTPStatusCode.CONFLICT,
+      );
+    }
+
     const user = await this.usersRepository.createUser({
       username,
       profilePhoto,
@@ -47,6 +65,7 @@ class RegisterUserService {
       coverPhoto,
       birthDate,
     });
+
     return {
       user,
     };

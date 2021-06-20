@@ -2,31 +2,73 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import IDatabase from '../../../app/db/IDatabase';
+import IUsersRepository from '../IUsersRepository';
+import {
+  CreateUserDTO,
+  FindUserByEmailDTO,
+  FindUserByUsernameDTO,
+  User,
+} from '../dto';
 
-interface CreateUserDTO {
-  username: string;
-  description: string;
-  birthDate: string;
-  email: string;
-  profilePhoto: string;
-  coverPhoto: string;
-}
-
-interface User {
-  id: string;
-  username: string;
-  description: string;
-  birth_date: string;
-  email: string;
-  profile_photo: string;
-  cover_photo: string;
-}
-
-class UsersRepository {
-  private database;
+class UsersRepository implements IUsersRepository {
+  private database: IDatabase;
 
   constructor(database: IDatabase) {
     this.database = database;
+  }
+
+  async FindUserByUsername({
+    username,
+  }: FindUserByUsernameDTO): Promise<User | null> {
+    const values = [username];
+    const responseUser = await this.database.query(
+      `select * from users where username=$1;`,
+      values,
+    );
+
+    const user = responseUser.results[0];
+
+    return user || null;
+  }
+
+  async FindUserByEmail({ email }: FindUserByEmailDTO): Promise<User | null> {
+    const values = [email];
+    const responseUser = await this.database.query(
+      `select * from users where email=$1;`,
+      values,
+    );
+
+    const user = responseUser.results[0];
+
+    return user || null;
+  }
+
+  async FindUsersByUsername({
+    username,
+  }: FindUserByUsernameDTO): Promise<User[]> {
+    const usernameToSearch = `%${username}%`;
+    const values = [usernameToSearch];
+    const responseUsers = await this.database.query(
+      `select * from users where username ilike $1;`,
+      values,
+    );
+
+    const users = responseUsers.results;
+
+    return users;
+  }
+
+  async FindUsersByEmail({ email }: FindUserByEmailDTO): Promise<User[]> {
+    const emailToSearch = `%${email}%`;
+    const values = [emailToSearch];
+    const responseUsers = await this.database.query(
+      `select * from users where email ilike $1;`,
+      values,
+    );
+
+    const users = responseUsers.results;
+
+    return users;
   }
 
   async createUser({

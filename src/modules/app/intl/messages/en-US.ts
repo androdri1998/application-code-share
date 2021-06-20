@@ -3,6 +3,8 @@ const messages = {
     INTERNAL_ERROR_SERVER: 'Internal Error Server',
     INTERNAL_ERROR_SERVER_MESSAGE: 'Something is wrong!',
     SCOPE_NOT_FOUND: 'Scope not found!',
+    USER_NOT_FOUND: 'User not found',
+    USER_ALREADY_EXISTS: 'User already exists',
   },
   keys: {
     logs: {

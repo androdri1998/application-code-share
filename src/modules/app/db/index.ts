@@ -17,8 +17,15 @@ const databaseSet = () => {
   };
 
   const query = async (sql: string, values?: any[]): Promise<any> => {
-    const response = await pool.query(sql, values);
-    pool.end();
+    const client = await pool.connect();
+
+    let response = { rows: [] };
+
+    try {
+      response = await client.query(sql, values);
+    } finally {
+      client.release();
+    }
 
     return { response_complete: response, results: response.rows };
   };
