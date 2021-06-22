@@ -2,6 +2,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import IDatabase from '../../../app/db/IDatabase';
+import { generateCurrentDate } from '../../../app/utils/date';
 import IUsersRepository from '../IUsersRepository';
 import {
   CreateUserDTO,
@@ -79,6 +80,9 @@ class UsersRepository implements IUsersRepository {
     profilePhoto,
     username,
   }: CreateUserDTO): Promise<User> {
+    const createdAt = generateCurrentDate();
+    const updatedAt = null;
+
     const user = {
       id: uuidv4(),
       username,
@@ -87,6 +91,8 @@ class UsersRepository implements IUsersRepository {
       email,
       profile_photo: profilePhoto,
       cover_photo: coverPhoto,
+      created_at: createdAt,
+      updated_at: updatedAt,
     };
 
     const values = [
@@ -97,12 +103,14 @@ class UsersRepository implements IUsersRepository {
       user.description,
       user.cover_photo,
       user.birth_date,
+      createdAt,
+      updatedAt,
     ];
 
     await this.database.query(
       `insert into
-      users(id, username, profile_photo, email, description, cover_photo, birth_date)
-    values ($1, $2, $3, $4, $5, $6, $7);`,
+      users(id, username, profile_photo, email, description, cover_photo, birth_date, created_at, updated_at)
+    values ($1, $2, $3, $4, $5, $6, $7, $8, $9);`,
       values,
     );
 

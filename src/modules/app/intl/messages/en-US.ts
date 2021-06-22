@@ -1,4 +1,7 @@
 const messages = {
+  responses: {
+    GENERATE_USER_LOGIN_CODE: 'Successful user login code generated',
+  },
   errors: {
     INTERNAL_ERROR_SERVER: 'Internal Error Server',
     INTERNAL_ERROR_SERVER_MESSAGE: 'Something is wrong!',

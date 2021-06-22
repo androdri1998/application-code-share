@@ -2,6 +2,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import IDatabase from '../../../app/db/IDatabase';
+import { generateCurrentDate } from '../../../app/utils/date';
 import IUsersRepository from '../IUsersRepository';
 import {
   CreateUserDTO,
@@ -57,6 +58,9 @@ class FakeUsersRepository implements IUsersRepository {
     profilePhoto,
     username,
   }: CreateUserDTO): Promise<User> {
+    const createdAt = generateCurrentDate();
+    const updatedAt = null;
+
     const user = {
       id: uuidv4(),
       username,
@@ -65,6 +69,8 @@ class FakeUsersRepository implements IUsersRepository {
       email,
       profile_photo: profilePhoto,
       cover_photo: coverPhoto,
+      created_at: createdAt,
+      updated_at: updatedAt,
     };
 
     this.users.push(user);

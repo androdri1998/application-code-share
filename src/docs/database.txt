@@ -1,0 +1,22 @@
+create table users(
+  id varchar(50) primary key,
+  username varchar(100) unique not null,
+  profile_photo text,
+  email varchar(255) unique not null,
+  description text,
+  cover_photo text,
+  birth_date timestamp not null,
+  created_at timestamp not null,
+  updated_at timestamp
+);
+
+create table user_login_codes(
+	id varchar(50) primary key,
+	user_id varchar(50),
+	code varchar(50),
+	isValid boolean not null,
+	checked_at timestamp not null,
+	created_at timestamp not null,
+	updated_at timestamp,
+	foreign key(user_id) references users(id)
+)

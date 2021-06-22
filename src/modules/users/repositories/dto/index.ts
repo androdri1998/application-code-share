@@ -16,6 +16,8 @@ export interface User {
   email: string;
   profile_photo: string | null;
   cover_photo: string | null;
+  created_at: string;
+  updated_at: string | null;
 }
 
 export interface FindUserByUsernameDTO {
