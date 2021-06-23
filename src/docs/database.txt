@@ -12,10 +12,10 @@ create table users(
 
 create table user_login_codes(
 	id varchar(50) primary key,
-	user_id varchar(50),
-	code varchar(50),
-	isValid boolean not null,
-	checked_at timestamp not null,
+	user_id varchar(50) not null,
+	code varchar(50) unique not null,
+	is_valid boolean not null,
+	checked_at timestamp,
 	created_at timestamp not null,
 	updated_at timestamp,
 	foreign key(user_id) references users(id)
