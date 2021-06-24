@@ -2,9 +2,11 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import IDatabase from '../../../app/db/IDatabase';
+import { generateCurrentDate } from '../../../app/utils/date';
 import {
   createDTO,
   FindByCodeDTO,
+  GetUserLoginCodeValidAndNotCheckedByUserIdDTO,
   UpdateCheckedAtAndUpdatedAtByCodeDTO,
   UpdateIsValidByCodeDTO,
   UserLoginCode,
@@ -22,7 +24,20 @@ class FakeUsersRepository implements IUserLoginCodeRepositoryRepository {
     this.userLoginCodes = [];
   }
 
-  async findByCode({ code }: FindByCodeDTO): Promise<UserLoginCode> {
+  async getUserLoginCodeValidAndNotCheckedByUserId({
+    user_id,
+  }: GetUserLoginCodeValidAndNotCheckedByUserIdDTO): Promise<UserLoginCode[]> {
+    const userLoginCodes = this.userLoginCodes.filter(
+      userLoginCode =>
+        userLoginCode.user_id === user_id &&
+        userLoginCode.is_valid === true &&
+        userLoginCode.checked_at === null,
+    );
+
+    return userLoginCodes;
+  }
+
+  async findByCode({ code }: FindByCodeDTO): Promise<UserLoginCode | null> {
     const userLoginCodeFound = this.userLoginCodes.find(
       userLoginCode => userLoginCode.code === code,
     );
@@ -41,6 +56,7 @@ class FakeUsersRepository implements IUserLoginCodeRepositoryRepository {
     const userLoginCode = this.userLoginCodes[userLoginCodeIndex];
 
     userLoginCode.is_valid = is_valid;
+    userLoginCode.updated_at = generateCurrentDate();
 
     this.userLoginCodes[userLoginCodeIndex] = userLoginCode;
 
@@ -66,22 +82,15 @@ class FakeUsersRepository implements IUserLoginCodeRepositoryRepository {
     return userLoginCode || null;
   }
 
-  async create({
-    user_id,
-    checked_at,
-    code,
-    created_at,
-    is_valid,
-    updated_at,
-  }: createDTO): Promise<UserLoginCode> {
+  async create({ user_id }: createDTO): Promise<UserLoginCode> {
     const userLoginCode = {
       id: uuidv4(),
       user_id,
-      code,
-      updated_at,
-      checked_at,
-      created_at,
-      is_valid,
+      code: uuidv4(),
+      updated_at: null,
+      checked_at: null,
+      created_at: generateCurrentDate(),
+      is_valid: true,
     };
 
     this.userLoginCodes.push(userLoginCode);

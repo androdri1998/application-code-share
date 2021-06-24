@@ -4,6 +4,7 @@ import {
   UpdateCheckedAtAndUpdatedAtByCodeDTO,
   createDTO,
   UserLoginCode,
+  GetUserLoginCodeValidAndNotCheckedByUserIdDTO,
 } from './dto';
 
 export default interface IUserLoginCodeRepositoryRepository {
@@ -14,5 +15,8 @@ export default interface IUserLoginCodeRepositoryRepository {
   updateCheckedAtAndUpdatedAtByCode(
     codeDTO: UpdateCheckedAtAndUpdatedAtByCodeDTO,
   ): Promise<UserLoginCode>;
+  getUserLoginCodeValidAndNotCheckedByUserId(
+    codeDTO: GetUserLoginCodeValidAndNotCheckedByUserIdDTO,
+  ): Promise<UserLoginCode[]>;
   create(codeDTO: createDTO): Promise<UserLoginCode>;
 }

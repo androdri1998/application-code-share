@@ -7,7 +7,7 @@ import database from '../../app/db';
 import uploadConfig from '../../../config/upload';
 import validateParams from '../../app/middlewares/validate-params';
 import StorageProvider from '../../app/providers/implementations/StorageProvider';
-import { registerUserSchema } from '../schemas/users.schemas';
+import { registerUserSchema } from '../schemas/users.schema';
 
 const upload = multer(uploadConfig.multer);
 

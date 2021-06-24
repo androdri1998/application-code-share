@@ -33,9 +33,9 @@ export interface UserLoginCode {
   user_id: string;
   code: string;
   is_valid: boolean;
-  checked_at: string;
+  checked_at: string | null;
   created_at: string;
-  updated_at: string;
+  updated_at: string | null;
 }
 
 export interface FindByCodeDTO {
@@ -53,11 +53,10 @@ export interface UpdateCheckedAtAndUpdatedAtByCodeDTO {
   updated_at: string;
 }
 
+export interface GetUserLoginCodeValidAndNotCheckedByUserIdDTO {
+  user_id: string;
+}
+
 export interface createDTO {
   user_id: string;
-  code: string;
-  is_valid: boolean;
-  checked_at: string;
-  created_at: string;
-  updated_at: string;
 }
