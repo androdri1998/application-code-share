@@ -3,6 +3,7 @@ import multer from 'multer';
 
 import UsersController from '../controllers/UsersController';
 import UsersRepository from '../repositories/implementations/UsersRepository';
+import DatabaseRepository from '../../app/repositories/implementations/DatabaseRepository';
 import database from '../../app/db';
 import uploadConfig from '../../../config/upload';
 import validateParams from '../../app/middlewares/validate-params';
@@ -15,8 +16,13 @@ const userRoutes = Router();
 
 const storageProvider = new StorageProvider();
 const usersRepository = new UsersRepository(database);
+const databaseRepository = new DatabaseRepository(database);
 
-const usersController = new UsersController(usersRepository, storageProvider);
+const usersController = new UsersController(
+  usersRepository,
+  storageProvider,
+  databaseRepository,
+);
 
 userRoutes.post(
   '/',

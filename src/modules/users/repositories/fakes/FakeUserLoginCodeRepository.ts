@@ -11,9 +11,9 @@ import {
   UpdateIsValidByCodeDTO,
   UserLoginCode,
 } from '../dto';
-import IUserLoginCodeRepositoryRepository from '../IUserLoginCodeRepository';
+import IUserLoginCodeRepository from '../IUserLoginCodeRepository';
 
-class FakeUsersRepository implements IUserLoginCodeRepositoryRepository {
+class FakeUsersRepository implements IUserLoginCodeRepository {
   private database;
 
   private userLoginCodes: UserLoginCode[];

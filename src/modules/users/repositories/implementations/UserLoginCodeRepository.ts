@@ -11,9 +11,9 @@ import {
   UpdateIsValidByCodeDTO,
   UserLoginCode,
 } from '../dto';
-import IUserLoginCodeRepositoryRepository from '../IUserLoginCodeRepository';
+import IUserLoginCodeRepository from '../IUserLoginCodeRepository';
 
-class UserLoginCodeRepository implements IUserLoginCodeRepositoryRepository {
+class UserLoginCodeRepository implements IUserLoginCodeRepository {
   private database: IDatabase;
 
   constructor(database: IDatabase) {

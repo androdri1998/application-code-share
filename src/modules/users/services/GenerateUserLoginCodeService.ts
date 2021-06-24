@@ -1,8 +1,9 @@
 import HTTPStatusCode from 'http-status-codes';
 
+import IDatabaseRepository from '../../app/repositories/IDatabaseRepository';
 import AppError from '../../app/errors/AppError';
 import messages from '../../app/intl/messages/en-US';
-import IUserLoginCodeRepositoryRepository from '../repositories/IUserLoginCodeRepository';
+import IUserLoginCodeRepository from '../repositories/IUserLoginCodeRepository';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 interface ExecuteDTO {
@@ -16,52 +17,64 @@ interface ExecuteResponse {
 class GenerateUserLoginCodeService {
   private usersRepository: IUsersRepository;
 
-  private userLoginCodeRepository: IUserLoginCodeRepositoryRepository;
+  private userLoginCodeRepository: IUserLoginCodeRepository;
+
+  private databaseRepository: IDatabaseRepository;
 
   constructor(
     usersRepository: IUsersRepository,
-    userLoginCodeRepository: IUserLoginCodeRepositoryRepository,
+    userLoginCodeRepository: IUserLoginCodeRepository,
+    databaseRepository: IDatabaseRepository,
   ) {
     this.usersRepository = usersRepository;
     this.userLoginCodeRepository = userLoginCodeRepository;
+    this.databaseRepository = databaseRepository;
 
     this.execute = this.execute.bind(this);
   }
 
   async execute({ email }: ExecuteDTO): Promise<ExecuteResponse> {
-    const user = await this.usersRepository.FindUserByEmail({
-      email,
-    });
+    try {
+      await this.databaseRepository.beginTransaction();
+      const user = await this.usersRepository.FindUserByEmail({
+        email,
+      });
 
-    if (!user) {
-      throw new AppError(
-        messages.errors.USER_NOT_FOUND,
-        HTTPStatusCode.NOT_FOUND,
+      if (!user) {
+        throw new AppError(
+          messages.errors.USER_NOT_FOUND,
+          HTTPStatusCode.NOT_FOUND,
+        );
+      }
+
+      const userLoginCodes = await this.userLoginCodeRepository.getUserLoginCodeValidAndNotCheckedByUserId(
+        {
+          user_id: user.id,
+        },
       );
-    }
 
-    const userLoginCodes = await this.userLoginCodeRepository.getUserLoginCodeValidAndNotCheckedByUserId(
-      {
+      await Promise.all(
+        userLoginCodes.map(async userLoginCode => {
+          await this.userLoginCodeRepository.invalidateUserLoginCodeByCode({
+            code: userLoginCode.code,
+            is_valid: false,
+          });
+        }),
+      );
+
+      await this.userLoginCodeRepository.create({
         user_id: user.id,
-      },
-    );
+      });
 
-    await Promise.all(
-      userLoginCodes.map(async userLoginCode => {
-        await this.userLoginCodeRepository.invalidateUserLoginCodeByCode({
-          code: userLoginCode.code,
-          is_valid: false,
-        });
-      }),
-    );
+      await this.databaseRepository.commit();
 
-    await this.userLoginCodeRepository.create({
-      user_id: user.id,
-    });
+      // TO-DO: should be able to send code by email
 
-    // TO-DO: should be able to send code by email
-
-    return { message: messages.responses.GENERATE_USER_LOGIN_CODE };
+      return { message: messages.responses.GENERATE_USER_LOGIN_CODE };
+    } catch (error) {
+      await this.databaseRepository.rollback();
+      throw error;
+    }
   }
 }
 

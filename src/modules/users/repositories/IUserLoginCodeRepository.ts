@@ -7,7 +7,7 @@ import {
   GetUserLoginCodeValidAndNotCheckedByUserIdDTO,
 } from './dto';
 
-export default interface IUserLoginCodeRepositoryRepository {
+export default interface IUserLoginCodeRepository {
   findByCode(codeDTO: FindByCodeDTO): Promise<UserLoginCode | null>;
   invalidateUserLoginCodeByCode(
     codeDTO: UpdateIsValidByCodeDTO,

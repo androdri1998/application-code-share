@@ -1,20 +1,28 @@
 import IDatabase from '../../app/db/IDatabase';
 import AppError from '../../app/errors/AppError';
+import IUsersRepository from '../repositories/IUsersRepository';
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
+import IStorageProvider from '../../app/providers/IStorageProvider';
 import FakeStorageProvider from '../../app/providers/fakes/FakeStorageProvider';
+import IDatabaseRepository from '../../app/repositories/IDatabaseRepository';
+import FakeDatabaseRepository from '../../app/repositories/fakes/FakeDatabaseRepository';
 import RegisterUserService from './RegisterUserService';
 
-let fakeUsersRepository: FakeUsersRepository;
-let fakeStorageProvider: FakeStorageProvider;
+let fakeUsersRepository: IUsersRepository;
+let fakeDatabaseRepository: IDatabaseRepository;
+let fakeStorageProvider: IStorageProvider;
 let registerUserService: RegisterUserService;
 
 describe('RegisterUserService', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository({} as IDatabase);
+    fakeDatabaseRepository = new FakeDatabaseRepository({} as IDatabase);
     fakeStorageProvider = new FakeStorageProvider();
+
     registerUserService = new RegisterUserService(
       fakeUsersRepository,
       fakeStorageProvider,
+      fakeDatabaseRepository,
     );
   });
 

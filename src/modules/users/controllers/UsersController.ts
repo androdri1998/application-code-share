@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import HTTPStatusCode from 'http-status-codes';
-import IStorageProvider from '../../app/providers/IStorageProvider';
 
+import IDatabaseRepository from '../../app/repositories/IDatabaseRepository';
+import IStorageProvider from '../../app/providers/IStorageProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 import RegisterUserService from '../services/RegisterUserService';
 
@@ -11,12 +12,16 @@ class UsersController {
 
   private storageProvider: IStorageProvider;
 
+  private databaseRepository: IDatabaseRepository;
+
   constructor(
     usersRepository: IUsersRepository,
     storageProvider: IStorageProvider,
+    databaseRepository: IDatabaseRepository,
   ) {
     this.usersRepository = usersRepository;
     this.storageProvider = storageProvider;
+    this.databaseRepository = databaseRepository;
 
     this.store = this.store.bind(this);
   }
@@ -34,6 +39,7 @@ class UsersController {
     const registerUserService = new RegisterUserService(
       this.usersRepository,
       this.storageProvider,
+      this.databaseRepository,
     );
     const response = await registerUserService.execute({
       birthDate,

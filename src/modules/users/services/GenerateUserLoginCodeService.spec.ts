@@ -1,11 +1,16 @@
 import IDatabase from '../../app/db/IDatabase';
 import AppError from '../../app/errors/AppError';
+import IUsersRepository from '../repositories/IUsersRepository';
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
+import IUserLoginCodeRepository from '../repositories/IUserLoginCodeRepository';
 import FakeUserLoginCodeRepository from '../repositories/fakes/FakeUserLoginCodeRepository';
+import IDatabaseRepository from '../../app/repositories/IDatabaseRepository';
+import FakeDatabaseRepository from '../../app/repositories/fakes/FakeDatabaseRepository';
 import GenerateUserLoginCodeService from './GenerateUserLoginCodeService';
 
-let fakeUsersRepository: FakeUsersRepository;
-let fakeUserLoginCodeRepository: FakeUserLoginCodeRepository;
+let fakeUsersRepository: IUsersRepository;
+let fakeUserLoginCodeRepository: IUserLoginCodeRepository;
+let fakeDatabaseRepository: IDatabaseRepository;
 let generateUserLoginCodeService: GenerateUserLoginCodeService;
 
 describe('RegisterUserService', () => {
@@ -14,9 +19,12 @@ describe('RegisterUserService', () => {
     fakeUserLoginCodeRepository = new FakeUserLoginCodeRepository(
       {} as IDatabase,
     );
+    fakeDatabaseRepository = new FakeDatabaseRepository({} as IDatabase);
+
     generateUserLoginCodeService = new GenerateUserLoginCodeService(
       fakeUsersRepository,
       fakeUserLoginCodeRepository,
+      fakeDatabaseRepository,
     );
   });
 

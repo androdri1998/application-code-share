@@ -5,16 +5,19 @@ import UsersRepository from '../repositories/implementations/UsersRepository';
 import UserLoginCodeRepository from '../repositories/implementations/UserLoginCodeRepository';
 import GenerateUserLoginCodeController from '../controllers/GenerateUserLoginCodeController';
 import UserRecoverPasswordController from '../controllers/UserRecoverPasswordController';
+import DatabaseRepository from '../../app/repositories/implementations/DatabaseRepository';
 import { UserLoginCodeGenerateSchema } from '../schemas/user-login-code.schema';
 import validateParams from '../../app/middlewares/validate-params';
 
 const userAuthenticateRoutes = Router();
 
 const usersRepository = new UsersRepository(database);
+const databaseRepository = new DatabaseRepository(database);
 const userLoginCodeRepository = new UserLoginCodeRepository(database);
 const generateUserLoginCodeController = new GenerateUserLoginCodeController(
   usersRepository,
   userLoginCodeRepository,
+  databaseRepository,
 );
 const userRecoverPasswordController = new UserRecoverPasswordController();
 
