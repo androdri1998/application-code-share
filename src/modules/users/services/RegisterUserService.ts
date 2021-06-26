@@ -60,12 +60,12 @@ class RegisterUserService {
     try {
       await this.databaseRepository.beginTransaction();
 
-      const userFoundByUsername = await this.usersRepository.FindUserByUsername(
+      const userFoundByUsername = await this.usersRepository.findUserByUsername(
         {
           username,
         },
       );
-      const userFoundByEmail = await this.usersRepository.FindUserByEmail({
+      const userFoundByEmail = await this.usersRepository.findUserByEmail({
         email,
       });
 

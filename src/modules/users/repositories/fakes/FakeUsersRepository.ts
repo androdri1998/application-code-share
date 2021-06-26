@@ -7,6 +7,7 @@ import IUsersRepository from '../IUsersRepository';
 import {
   CreateUserDTO,
   FindUserByEmailDTO,
+  FindUserByIdDTO,
   FindUserByUsernameDTO,
   User,
 } from '../dto';
@@ -22,7 +23,13 @@ class FakeUsersRepository implements IUsersRepository {
     this.users = [];
   }
 
-  async FindUserByUsername({
+  async findUserById({ userId }: FindUserByIdDTO): Promise<User | null> {
+    const userFound = this.users.find(user => user.id === userId);
+
+    return userFound || null;
+  }
+
+  async findUserByUsername({
     username,
   }: FindUserByUsernameDTO): Promise<User | null> {
     const userFound = this.users.find(user => user.username === username);
@@ -30,13 +37,13 @@ class FakeUsersRepository implements IUsersRepository {
     return userFound || null;
   }
 
-  async FindUserByEmail({ email }: FindUserByEmailDTO): Promise<User | null> {
+  async findUserByEmail({ email }: FindUserByEmailDTO): Promise<User | null> {
     const userFound = this.users.find(user => user.email === email);
 
     return userFound || null;
   }
 
-  async FindUsersByUsername({
+  async findUsersByUsername({
     username,
   }: FindUserByUsernameDTO): Promise<User[]> {
     const users = this.users.filter(user => user.username.includes(username));
@@ -44,7 +51,7 @@ class FakeUsersRepository implements IUsersRepository {
     return users;
   }
 
-  async FindUsersByEmail({ email }: FindUserByEmailDTO): Promise<User[]> {
+  async findUsersByEmail({ email }: FindUserByEmailDTO): Promise<User[]> {
     const users = this.users.filter(user => user.email.includes(email));
 
     return users;

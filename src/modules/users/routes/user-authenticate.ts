@@ -4,9 +4,13 @@ import database from '../../app/db';
 import UsersRepository from '../repositories/implementations/UsersRepository';
 import UserLoginCodeRepository from '../repositories/implementations/UserLoginCodeRepository';
 import GenerateUserLoginCodeController from '../controllers/GenerateUserLoginCodeController';
+import CheckUserLoginCodeController from '../controllers/CheckUserLoginCodeController';
 import UserRecoverPasswordController from '../controllers/UserRecoverPasswordController';
 import DatabaseRepository from '../../app/repositories/implementations/DatabaseRepository';
-import { UserLoginCodeGenerateSchema } from '../schemas/user-login-code.schema';
+import {
+  userLoginCodeGenerateSchema,
+  checkUserLoginCodeSchema,
+} from '../schemas/user-login-code.schema';
 import validateParams from '../../app/middlewares/validate-params';
 
 const userAuthenticateRoutes = Router();
@@ -19,17 +23,22 @@ const generateUserLoginCodeController = new GenerateUserLoginCodeController(
   userLoginCodeRepository,
   databaseRepository,
 );
+const checkUserLoginCodeController = new CheckUserLoginCodeController(
+  userLoginCodeRepository,
+  databaseRepository,
+);
 const userRecoverPasswordController = new UserRecoverPasswordController();
 
 userAuthenticateRoutes.post(
   '/login/code/generate',
-  [validateParams(UserLoginCodeGenerateSchema)],
+  [validateParams(userLoginCodeGenerateSchema)],
   generateUserLoginCodeController.store,
 );
 
 userAuthenticateRoutes.post(
   '/login/code/check',
-  generateUserLoginCodeController.store,
+  [validateParams(checkUserLoginCodeSchema)],
+  checkUserLoginCodeController.store,
 );
 
 userAuthenticateRoutes.patch(

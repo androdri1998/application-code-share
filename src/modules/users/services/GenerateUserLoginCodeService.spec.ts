@@ -13,7 +13,7 @@ let fakeUserLoginCodeRepository: IUserLoginCodeRepository;
 let fakeDatabaseRepository: IDatabaseRepository;
 let generateUserLoginCodeService: GenerateUserLoginCodeService;
 
-describe('RegisterUserService', () => {
+describe('GenerateUserLoginCodeService', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository({} as IDatabase);
     fakeUserLoginCodeRepository = new FakeUserLoginCodeRepository(
@@ -46,7 +46,7 @@ describe('RegisterUserService', () => {
   });
 
   it('should not be able to generate user login code with a email non-existent', async () => {
-    expect(
+    await expect(
       generateUserLoginCodeService.execute({
         email: 'email.non.existent@mailtest.com',
       }),

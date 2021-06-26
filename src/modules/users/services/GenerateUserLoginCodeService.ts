@@ -36,7 +36,7 @@ class GenerateUserLoginCodeService {
   async execute({ email }: ExecuteDTO): Promise<ExecuteResponse> {
     try {
       await this.databaseRepository.beginTransaction();
-      const user = await this.usersRepository.FindUserByEmail({
+      const user = await this.usersRepository.findUserByEmail({
         email,
       });
 

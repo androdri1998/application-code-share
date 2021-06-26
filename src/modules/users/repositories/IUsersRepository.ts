@@ -3,12 +3,14 @@ import {
   FindUserByEmailDTO,
   FindUserByUsernameDTO,
   User,
+  FindUserByIdDTO,
 } from './dto';
 
 export default interface IUsersRepository {
   createUser(user: CreateUserDTO): Promise<User>;
-  FindUsersByUsername({ username }: FindUserByUsernameDTO): Promise<User[]>;
-  FindUsersByEmail({ email }: FindUserByEmailDTO): Promise<User[]>;
-  FindUserByUsername({ username }: FindUserByUsernameDTO): Promise<User | null>;
-  FindUserByEmail({ email }: FindUserByEmailDTO): Promise<User | null>;
+  findUsersByUsername({ username }: FindUserByUsernameDTO): Promise<User[]>;
+  findUsersByEmail({ email }: FindUserByEmailDTO): Promise<User[]>;
+  findUserByUsername({ username }: FindUserByUsernameDTO): Promise<User | null>;
+  findUserByEmail({ email }: FindUserByEmailDTO): Promise<User | null>;
+  findUserById({ userId }: FindUserByIdDTO): Promise<User | null>;
 }

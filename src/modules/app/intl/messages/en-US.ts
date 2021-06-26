@@ -1,6 +1,7 @@
 const messages = {
   responses: {
     GENERATE_USER_LOGIN_CODE: 'Successful user login code generated',
+    CHECK_USER_LOGIN_CODE: 'Successful user login code checked',
   },
   errors: {
     INTERNAL_ERROR_SERVER: 'Internal Error Server',
@@ -8,6 +9,8 @@ const messages = {
     SCOPE_NOT_FOUND: 'Scope not found!',
     USER_NOT_FOUND: 'User not found',
     USER_ALREADY_EXISTS: 'User already exists',
+    CODE_IS_NOT_VALID: 'Code is not valid',
+    CODE_NOT_FOUND: 'Code not found',
   },
   keys: {
     logs: {

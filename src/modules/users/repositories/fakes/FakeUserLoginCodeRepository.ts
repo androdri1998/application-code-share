@@ -65,8 +65,6 @@ class FakeUsersRepository implements IUserLoginCodeRepository {
 
   async updateCheckedAtAndUpdatedAtByCode({
     code,
-    updated_at,
-    checked_at,
   }: UpdateCheckedAtAndUpdatedAtByCodeDTO): Promise<UserLoginCode> {
     const userLoginCodeIndex = this.userLoginCodes.findIndex(
       userLoginCode => userLoginCode.code === code,
@@ -74,8 +72,8 @@ class FakeUsersRepository implements IUserLoginCodeRepository {
 
     const userLoginCode = this.userLoginCodes[userLoginCodeIndex];
 
-    userLoginCode.updated_at = updated_at;
-    userLoginCode.checked_at = checked_at;
+    userLoginCode.updated_at = generateCurrentDate();
+    userLoginCode.checked_at = generateCurrentDate();
 
     this.userLoginCodes[userLoginCodeIndex] = userLoginCode;
 

@@ -49,8 +49,6 @@ export interface UpdateIsValidByCodeDTO {
 
 export interface UpdateCheckedAtAndUpdatedAtByCodeDTO {
   code: string;
-  checked_at: string;
-  updated_at: string;
 }
 
 export interface GetUserLoginCodeValidAndNotCheckedByUserIdDTO {
@@ -59,4 +57,8 @@ export interface GetUserLoginCodeValidAndNotCheckedByUserIdDTO {
 
 export interface createDTO {
   user_id: string;
+}
+
+export interface FindUserByIdDTO {
+  userId: string;
 }

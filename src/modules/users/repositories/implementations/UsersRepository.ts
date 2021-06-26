@@ -7,6 +7,7 @@ import IUsersRepository from '../IUsersRepository';
 import {
   CreateUserDTO,
   FindUserByEmailDTO,
+  FindUserByIdDTO,
   FindUserByUsernameDTO,
   User,
 } from '../dto';
@@ -18,7 +19,19 @@ class UsersRepository implements IUsersRepository {
     this.database = database;
   }
 
-  async FindUserByUsername({
+  async findUserById({ userId }: FindUserByIdDTO): Promise<User | null> {
+    const values = [userId];
+    const responseUser = await this.database.query(
+      `select * from users where id=$1;`,
+      values,
+    );
+
+    const user = responseUser.results[0];
+
+    return user || null;
+  }
+
+  async findUserByUsername({
     username,
   }: FindUserByUsernameDTO): Promise<User | null> {
     const values = [username];
@@ -32,7 +45,7 @@ class UsersRepository implements IUsersRepository {
     return user || null;
   }
 
-  async FindUserByEmail({ email }: FindUserByEmailDTO): Promise<User | null> {
+  async findUserByEmail({ email }: FindUserByEmailDTO): Promise<User | null> {
     const values = [email];
     const responseUser = await this.database.query(
       `select * from users where email=$1;`,
@@ -44,7 +57,7 @@ class UsersRepository implements IUsersRepository {
     return user || null;
   }
 
-  async FindUsersByUsername({
+  async findUsersByUsername({
     username,
   }: FindUserByUsernameDTO): Promise<User[]> {
     const usernameToSearch = `%${username}%`;
@@ -59,7 +72,7 @@ class UsersRepository implements IUsersRepository {
     return users;
   }
 
-  async FindUsersByEmail({ email }: FindUserByEmailDTO): Promise<User[]> {
+  async findUsersByEmail({ email }: FindUserByEmailDTO): Promise<User[]> {
     const emailToSearch = `%${email}%`;
     const values = [emailToSearch];
     const responseUsers = await this.database.query(

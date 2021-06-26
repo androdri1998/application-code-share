@@ -61,12 +61,10 @@ class UserLoginCodeRepository implements IUserLoginCodeRepository {
 
   async updateCheckedAtAndUpdatedAtByCode({
     code,
-    checked_at,
-    updated_at,
   }: UpdateCheckedAtAndUpdatedAtByCodeDTO): Promise<UserLoginCode> {
-    const values = [checked_at, updated_at, code];
+    const values = [code];
     await this.database.query(
-      `update user_login_codes set checked_at = $1, updated_at = $2 where code = $3;`,
+      `update user_login_codes set checked_at = now(), updated_at = now() where code = $1;`,
       values,
     );
 
