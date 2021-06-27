@@ -10,6 +10,8 @@ import {
   FindUserByIdDTO,
   FindUserByUsernameDTO,
   User,
+  FindUsersByEmailDTO,
+  FindUsersByUsernameDTO,
 } from '../dto';
 
 class UsersRepository implements IUsersRepository {
@@ -58,12 +60,14 @@ class UsersRepository implements IUsersRepository {
   }
 
   async findUsersByUsername({
-    username,
-  }: FindUserByUsernameDTO): Promise<User[]> {
+    username = '',
+    limit = 10,
+    offset = 0,
+  }: FindUsersByUsernameDTO): Promise<User[]> {
     const usernameToSearch = `%${username}%`;
-    const values = [usernameToSearch];
+    const values = [usernameToSearch, limit, offset];
     const responseUsers = await this.database.query(
-      `select * from users where username ilike $1;`,
+      `select * from users where username ilike $1 limit $2 offset $3;`,
       values,
     );
 
@@ -72,11 +76,15 @@ class UsersRepository implements IUsersRepository {
     return users;
   }
 
-  async findUsersByEmail({ email }: FindUserByEmailDTO): Promise<User[]> {
+  async findUsersByEmail({
+    email = '',
+    limit = 10,
+    offset = 0,
+  }: FindUsersByEmailDTO): Promise<User[]> {
     const emailToSearch = `%${email}%`;
-    const values = [emailToSearch];
+    const values = [emailToSearch, limit, offset];
     const responseUsers = await this.database.query(
-      `select * from users where email ilike $1;`,
+      `select * from users where email ilike $1 limit $2 offset $3;`,
       values,
     );
 

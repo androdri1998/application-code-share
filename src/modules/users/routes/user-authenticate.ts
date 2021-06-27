@@ -5,7 +5,6 @@ import UsersRepository from '../repositories/implementations/UsersRepository';
 import UserLoginCodeRepository from '../repositories/implementations/UserLoginCodeRepository';
 import GenerateUserLoginCodeController from '../controllers/GenerateUserLoginCodeController';
 import CheckUserLoginCodeController from '../controllers/CheckUserLoginCodeController';
-import UserRecoverPasswordController from '../controllers/UserRecoverPasswordController';
 import DatabaseRepository from '../../app/repositories/implementations/DatabaseRepository';
 import {
   userLoginCodeGenerateSchema,
@@ -27,7 +26,6 @@ const checkUserLoginCodeController = new CheckUserLoginCodeController(
   userLoginCodeRepository,
   databaseRepository,
 );
-const userRecoverPasswordController = new UserRecoverPasswordController();
 
 userAuthenticateRoutes.post(
   '/login/code/generate',
@@ -39,11 +37,6 @@ userAuthenticateRoutes.post(
   '/login/code/check',
   [validateParams(checkUserLoginCodeSchema)],
   checkUserLoginCodeController.store,
-);
-
-userAuthenticateRoutes.patch(
-  '/recover-password',
-  userRecoverPasswordController.patch,
 );
 
 export default userAuthenticateRoutes;

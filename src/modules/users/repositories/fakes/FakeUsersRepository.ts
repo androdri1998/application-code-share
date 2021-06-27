@@ -10,6 +10,8 @@ import {
   FindUserByIdDTO,
   FindUserByUsernameDTO,
   User,
+  FindUsersByEmailDTO,
+  FindUsersByUsernameDTO,
 } from '../dto';
 
 class FakeUsersRepository implements IUsersRepository {
@@ -44,17 +46,23 @@ class FakeUsersRepository implements IUsersRepository {
   }
 
   async findUsersByUsername({
-    username,
-  }: FindUserByUsernameDTO): Promise<User[]> {
+    username = '',
+    limit = 10,
+    offset = 0,
+  }: FindUsersByUsernameDTO): Promise<User[]> {
     const users = this.users.filter(user => user.username.includes(username));
-
-    return users;
+    const newLimit = offset + limit;
+    return users.slice(offset, newLimit);
   }
 
-  async findUsersByEmail({ email }: FindUserByEmailDTO): Promise<User[]> {
+  async findUsersByEmail({
+    email = '',
+    limit = 10,
+    offset = 0,
+  }: FindUsersByEmailDTO): Promise<User[]> {
     const users = this.users.filter(user => user.email.includes(email));
-
-    return users;
+    const newLimit = offset + limit;
+    return users.slice(offset, newLimit);
   }
 
   async createUser({

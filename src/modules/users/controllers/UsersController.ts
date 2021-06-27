@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import HTTPStatusCode from 'http-status-codes';
@@ -6,6 +7,8 @@ import IDatabaseRepository from '../../app/repositories/IDatabaseRepository';
 import IStorageProvider from '../../app/providers/IStorageProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 import RegisterUserService from '../services/RegisterUserService';
+import GetUsersService from '../services/GetUsersService';
+import GetUserService from '../services/GetUserService';
 
 class UsersController {
   private usersRepository: IUsersRepository;
@@ -24,6 +27,8 @@ class UsersController {
     this.databaseRepository = databaseRepository;
 
     this.store = this.store.bind(this);
+    this.index = this.index.bind(this);
+    this.get = this.get.bind(this);
   }
 
   async store(
@@ -50,6 +55,44 @@ class UsersController {
       username,
     });
     return res.status(HTTPStatusCode.CREATED).json(response);
+  }
+
+  async index(
+    req: Request,
+    res: Response,
+  ): Promise<Response<any, Record<string, any>>> {
+    const { username, limit, page } = req.query;
+
+    const getUsersService = new GetUsersService(
+      this.usersRepository,
+      this.databaseRepository,
+    );
+
+    const response = await getUsersService.execute({
+      username: username ? (username as string) : '',
+      limit: limit ? parseInt(limit as string) : 10,
+      page: page ? parseInt(page as string) : 0,
+    });
+
+    return res.status(HTTPStatusCode.OK).json(response);
+  }
+
+  async get(
+    req: Request,
+    res: Response,
+  ): Promise<Response<any, Record<string, any>>> {
+    const { userId } = req.params;
+
+    const getUserService = new GetUserService(
+      this.usersRepository,
+      this.databaseRepository,
+    );
+
+    const response = await getUserService.execute({
+      userId,
+    });
+
+    return res.status(HTTPStatusCode.OK).json(response);
   }
 }
 

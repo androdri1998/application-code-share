@@ -28,6 +28,18 @@ export interface FindUserByEmailDTO {
   email: string;
 }
 
+export interface FindUsersByUsernameDTO {
+  username?: string;
+  offset?: number;
+  limit?: number;
+}
+
+export interface FindUsersByEmailDTO {
+  email?: string;
+  offset?: number;
+  limit?: number;
+}
+
 export interface UserLoginCode {
   id: string;
   user_id: string;

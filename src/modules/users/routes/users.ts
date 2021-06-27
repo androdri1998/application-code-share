@@ -8,7 +8,11 @@ import database from '../../app/db';
 import uploadConfig from '../../../config/upload';
 import validateParams from '../../app/middlewares/validate-params';
 import StorageProvider from '../../app/providers/implementations/StorageProvider';
-import { registerUserSchema } from '../schemas/users.schema';
+import {
+  registerUserSchema,
+  getUserSchema,
+  getUsersSchema,
+} from '../schemas/users.schema';
 
 const upload = multer(uploadConfig.multer);
 
@@ -29,5 +33,9 @@ userRoutes.post(
   [upload.array('profile_photos', 2), validateParams(registerUserSchema)],
   usersController.store,
 );
+
+userRoutes.get('/', validateParams(getUsersSchema), usersController.index);
+
+userRoutes.get('/:userId', validateParams(getUserSchema), usersController.get);
 
 export default userRoutes;
