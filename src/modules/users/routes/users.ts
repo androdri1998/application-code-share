@@ -3,6 +3,7 @@ import multer from 'multer';
 
 import UsersController from '../controllers/UsersController';
 import UsersRepository from '../repositories/implementations/UsersRepository';
+import UserLoginCodeRepository from '../repositories/implementations/UserLoginCodeRepository';
 import DatabaseRepository from '../../app/repositories/implementations/DatabaseRepository';
 import database from '../../app/db';
 import uploadConfig from '../../../config/upload';
@@ -12,6 +13,7 @@ import {
   registerUserSchema,
   getUserSchema,
   getUsersSchema,
+  deleteUserSchema,
 } from '../schemas/users.schema';
 
 const upload = multer(uploadConfig.multer);
@@ -20,10 +22,12 @@ const userRoutes = Router();
 
 const storageProvider = new StorageProvider();
 const usersRepository = new UsersRepository(database);
+const userLoginCodeRepository = new UserLoginCodeRepository(database);
 const databaseRepository = new DatabaseRepository(database);
 
 const usersController = new UsersController(
   usersRepository,
+  userLoginCodeRepository,
   storageProvider,
   databaseRepository,
 );
@@ -37,5 +41,11 @@ userRoutes.post(
 userRoutes.get('/', validateParams(getUsersSchema), usersController.index);
 
 userRoutes.get('/:userId', validateParams(getUserSchema), usersController.get);
+
+userRoutes.delete(
+  '/:userId',
+  validateParams(deleteUserSchema),
+  usersController.destroy,
+);
 
 export default userRoutes;

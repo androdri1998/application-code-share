@@ -4,6 +4,7 @@ import HTTPStatusCode from 'http-status-codes';
 import AppError from '../../app/errors/AppError';
 import messages from '../../app/intl/messages/en-US';
 import IUsersRepository from '../repositories/IUsersRepository';
+import IUserLoginCodeRepository from '../repositories/IUserLoginCodeRepository';
 import IDatabaseRepository from '../../app/repositories/IDatabaseRepository';
 
 interface ExecuteDTO {
@@ -11,30 +12,24 @@ interface ExecuteDTO {
 }
 
 interface ExecuteResponse {
-  user: {
-    id: string;
-    username: string;
-    description: string | null;
-    birth_date: string;
-    email: string;
-    profile_photo: string | null;
-    cover_photo: string | null;
-    created_at: string;
-    updated_at: string | null;
-  };
+  message: string;
 }
 
 class GetUserService {
   private usersRepository: IUsersRepository;
+
+  private userLoginCodeRepository: IUserLoginCodeRepository;
 
   private databaseRepository: IDatabaseRepository;
 
   constructor(
     usersRepository: IUsersRepository,
     databaseRepository: IDatabaseRepository,
+    userLoginCodeRepository: IUserLoginCodeRepository,
   ) {
     this.usersRepository = usersRepository;
     this.databaseRepository = databaseRepository;
+    this.userLoginCodeRepository = userLoginCodeRepository;
 
     this.execute = this.execute.bind(this);
   }
@@ -54,9 +49,17 @@ class GetUserService {
         );
       }
 
+      await this.userLoginCodeRepository.removeUserLoginCodesByUserId({
+        userId,
+      });
+
+      await this.usersRepository.removeUserById({
+        userId,
+      });
+
       await this.databaseRepository.commit();
 
-      return { user };
+      return { message: messages.responses.USER_DELETED_WITH_SUCCESS };
     } catch (error) {
       await this.databaseRepository.rollback();
       throw error;

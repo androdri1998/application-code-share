@@ -7,6 +7,7 @@ import {
   createDTO,
   FindByCodeDTO,
   GetUserLoginCodeValidAndNotCheckedByUserIdDTO,
+  RemoveUserLoginCodesByUserIdDTO,
   UpdateCheckedAtAndUpdatedAtByCodeDTO,
   UpdateIsValidByCodeDTO,
   UserLoginCode,
@@ -22,6 +23,18 @@ class FakeUsersRepository implements IUserLoginCodeRepository {
     this.database = database;
 
     this.userLoginCodes = [];
+  }
+
+  async removeUserLoginCodesByUserId({
+    userId,
+  }: RemoveUserLoginCodesByUserIdDTO): Promise<boolean> {
+    const userLoginCodes = this.userLoginCodes.filter(
+      userLoginCode => userLoginCode.user_id !== userId,
+    );
+    this.userLoginCodes = userLoginCodes;
+    const isDeleted = true;
+
+    return isDeleted;
   }
 
   async getUserLoginCodeValidAndNotCheckedByUserId({

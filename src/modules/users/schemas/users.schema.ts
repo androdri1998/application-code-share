@@ -23,3 +23,9 @@ export const getUserSchema = {
     userId: joi.string().uuid().required(),
   }),
 };
+
+export const deleteUserSchema = {
+  params: joi.object({
+    userId: joi.string().uuid().required(),
+  }),
+};

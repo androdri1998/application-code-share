@@ -6,6 +6,7 @@ import {
   FindUserByIdDTO,
   FindUsersByUsernameDTO,
   FindUsersByEmailDTO,
+  RemoveUserByIdDTO,
 } from './dto';
 
 export default interface IUsersRepository {
@@ -23,4 +24,5 @@ export default interface IUsersRepository {
   findUserByUsername({ username }: FindUserByUsernameDTO): Promise<User | null>;
   findUserByEmail({ email }: FindUserByEmailDTO): Promise<User | null>;
   findUserById({ userId }: FindUserByIdDTO): Promise<User | null>;
+  removeUserById({ userId }: RemoveUserByIdDTO): Promise<boolean>;
 }

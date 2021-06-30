@@ -7,6 +7,7 @@ import {
   createDTO,
   FindByCodeDTO,
   GetUserLoginCodeValidAndNotCheckedByUserIdDTO,
+  RemoveUserLoginCodesByUserIdDTO,
   UpdateCheckedAtAndUpdatedAtByCodeDTO,
   UpdateIsValidByCodeDTO,
   UserLoginCode,
@@ -18,6 +19,19 @@ class UserLoginCodeRepository implements IUserLoginCodeRepository {
 
   constructor(database: IDatabase) {
     this.database = database;
+  }
+
+  async removeUserLoginCodesByUserId({
+    userId,
+  }: RemoveUserLoginCodesByUserIdDTO): Promise<boolean> {
+    const values = [userId];
+    await this.database.query(
+      `delete from user_login_codes where user_id=$1;`,
+      values,
+    );
+    const isDeleted = true;
+
+    return isDeleted;
   }
 
   async getUserLoginCodeValidAndNotCheckedByUserId({

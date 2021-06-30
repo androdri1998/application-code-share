@@ -5,6 +5,7 @@ import {
   createDTO,
   UserLoginCode,
   GetUserLoginCodeValidAndNotCheckedByUserIdDTO,
+  RemoveUserLoginCodesByUserIdDTO,
 } from './dto';
 
 export default interface IUserLoginCodeRepository {
@@ -18,5 +19,8 @@ export default interface IUserLoginCodeRepository {
   getUserLoginCodeValidAndNotCheckedByUserId(
     codeDTO: GetUserLoginCodeValidAndNotCheckedByUserIdDTO,
   ): Promise<UserLoginCode[]>;
+  removeUserLoginCodesByUserId(
+    codeDTO: RemoveUserLoginCodesByUserIdDTO,
+  ): Promise<boolean>;
   create(codeDTO: createDTO): Promise<UserLoginCode>;
 }

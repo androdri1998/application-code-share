@@ -52,6 +52,8 @@ class GetUsersService {
         offset,
       });
 
+      await this.databaseRepository.commit();
+
       return {
         results: users,
       };

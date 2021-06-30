@@ -74,3 +74,11 @@ export interface createDTO {
 export interface FindUserByIdDTO {
   userId: string;
 }
+
+export interface RemoveUserByIdDTO {
+  userId: string;
+}
+
+export interface RemoveUserLoginCodesByUserIdDTO {
+  userId: string;
+}
