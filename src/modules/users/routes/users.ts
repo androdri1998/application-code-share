@@ -8,6 +8,7 @@ import DatabaseRepository from '../../app/repositories/implementations/DatabaseR
 import database from '../../app/db';
 import uploadConfig from '../../../config/upload';
 import validateParams from '../../app/middlewares/validate-params';
+import ensureAuthentication from '../middlewares/ensureAuthentication';
 import StorageProvider from '../../app/providers/implementations/StorageProvider';
 import {
   registerUserSchema,
@@ -38,13 +39,21 @@ userRoutes.post(
   usersController.store,
 );
 
-userRoutes.get('/', validateParams(getUsersSchema), usersController.index);
+userRoutes.get(
+  '/',
+  [ensureAuthentication, validateParams(getUsersSchema)],
+  usersController.index,
+);
 
-userRoutes.get('/:userId', validateParams(getUserSchema), usersController.get);
+userRoutes.get(
+  '/:userId',
+  [ensureAuthentication, validateParams(getUserSchema)],
+  usersController.get,
+);
 
 userRoutes.delete(
   '/:userId',
-  validateParams(deleteUserSchema),
+  [ensureAuthentication, validateParams(deleteUserSchema)],
   usersController.destroy,
 );
 
