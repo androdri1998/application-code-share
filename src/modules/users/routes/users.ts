@@ -8,7 +8,7 @@ import DatabaseRepository from '../../app/repositories/implementations/DatabaseR
 import database from '../../app/db';
 import uploadConfig from '../../../config/upload';
 import validateParams from '../../app/middlewares/validate-params';
-import ensureAuthentication from '../middlewares/ensureAuthentication';
+import ensureAuthentication from '../middlewares/ensureAuthentication.ts';
 import StorageProvider from '../../app/providers/implementations/StorageProvider';
 import {
   registerUserSchema,
