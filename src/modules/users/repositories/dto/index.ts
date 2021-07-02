@@ -92,3 +92,42 @@ export interface RemoveUserByIdDTO {
 export interface RemoveUserLoginCodesByUserIdDTO {
   userId: string;
 }
+
+export interface Code {
+  id: string;
+  user_id: string;
+  code: string;
+  is_valid: boolean;
+  unavailable_at: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CreateCodeDTO {
+  userId: string;
+  code: string;
+  unavailableAt?: string;
+}
+
+export interface FindCodesByUserIdDTO {
+  userId: string;
+}
+
+export interface FindCodeByIdDTO {
+  codeId: string;
+}
+
+export interface UpdateCodeByIdDTO {
+  codeId: string;
+  code: string;
+}
+
+export interface UpdateAvailableAtByIdDTO {
+  codeId: string;
+  availableAt: string;
+}
+
+export interface UpdateIsValidByIdDTO {
+  codeId: string;
+  isValid: string;
+}

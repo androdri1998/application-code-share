@@ -20,3 +20,14 @@ create table user_login_codes(
 	updated_at timestamp,
 	foreign key(user_id) references users(id)
 )
+
+create table codes(
+	id varchar(50) primary key,
+	user_id varchar(50) not null,
+	code text unique not null,
+	is_valid boolean not null,
+	created_at timestamp not null,
+	unavailable_at timestamp,
+	updated_at timestamp,
+	foreign key(user_id) references users(id)
+)
