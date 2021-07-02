@@ -13,6 +13,7 @@ import {
   FindUsersByEmailDTO,
   FindUsersByUsernameDTO,
   RemoveUserByIdDTO,
+  UpdateUserByIdDTO,
 } from '../dto';
 
 class FakeUsersRepository implements IUsersRepository {
@@ -24,6 +25,42 @@ class FakeUsersRepository implements IUsersRepository {
     this.database = database;
 
     this.users = [];
+  }
+
+  async updateUserById({
+    userId,
+    username,
+    description,
+    birthDate,
+    email,
+    profilePhoto,
+    coverPhoto,
+  }: UpdateUserByIdDTO): Promise<User | null> {
+    const updatedAt = generateCurrentDate();
+
+    const user = {
+      id: userId,
+      username,
+      description,
+      birth_date: birthDate,
+      email,
+      profile_photo: profilePhoto,
+      cover_photo: coverPhoto,
+      updated_at: updatedAt,
+    };
+    const userToUpdateIndex = this.users.findIndex(
+      userToFind => userToFind.id === userId,
+    );
+
+    const userToUpdateObject = this.users[userToUpdateIndex];
+    this.users[userToUpdateIndex] = {
+      ...user,
+      created_at: userToUpdateObject.created_at,
+    };
+
+    const userUpdated = this.findUserById({ userId });
+
+    return userUpdated;
   }
 
   async removeUserById({ userId }: RemoveUserByIdDTO): Promise<boolean> {

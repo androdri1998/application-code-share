@@ -29,3 +29,15 @@ export const deleteUserSchema = {
     userId: joi.string().uuid().required(),
   }),
 };
+
+export const updateUserSchema = {
+  params: joi.object({
+    userId: joi.string().uuid().required(),
+  }),
+  body: joi.object({
+    username: joi.string().required(),
+    description: joi.string(),
+    birthDate: joi.string().required(),
+    email: joi.string().email().required(),
+  }),
+};

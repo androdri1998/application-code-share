@@ -8,13 +8,14 @@ import DatabaseRepository from '../../app/repositories/implementations/DatabaseR
 import database from '../../app/db';
 import uploadConfig from '../../../config/upload';
 import validateParams from '../../app/middlewares/validate-params';
-import ensureAuthentication from '../middlewares/ensureAuthentication.ts';
+import ensureAuthentication from '../middlewares/ensureAuthentication';
 import StorageProvider from '../../app/providers/implementations/StorageProvider';
 import {
   registerUserSchema,
   getUserSchema,
   getUsersSchema,
   deleteUserSchema,
+  updateUserSchema,
 } from '../schemas/users.schema';
 
 const upload = multer(uploadConfig.multer);
@@ -55,6 +56,16 @@ userRoutes.delete(
   '/:userId',
   [ensureAuthentication, validateParams(deleteUserSchema)],
   usersController.destroy,
+);
+
+userRoutes.put(
+  '/:userId',
+  [
+    ensureAuthentication,
+    upload.array('profile_photos', 2),
+    validateParams(updateUserSchema),
+  ],
+  usersController.update,
 );
 
 export default userRoutes;

@@ -11,6 +11,7 @@ import RegisterUserService from '../services/RegisterUserService';
 import GetUsersService from '../services/GetUsersService';
 import GetUserService from '../services/GetUserService';
 import RemoveUserService from '../services/RemoveUserService';
+import UpdateUserService from '../services/UpdateUserService';
 
 class UsersController {
   private usersRepository: IUsersRepository;
@@ -36,6 +37,7 @@ class UsersController {
     this.index = this.index.bind(this);
     this.get = this.get.bind(this);
     this.destroy = this.destroy.bind(this);
+    this.update = this.update.bind(this);
   }
 
   async store(
@@ -62,6 +64,36 @@ class UsersController {
       username,
     });
     return res.status(HTTPStatusCode.CREATED).json(response);
+  }
+
+  async update(
+    req: Request,
+    res: Response,
+  ): Promise<Response<any, Record<string, any>>> {
+    const { birthDate, description, email, username } = req.body;
+    const { userId } = req.params;
+    const { files } = req;
+
+    const filesUpload: Express.Multer.File[] = files as Express.Multer.File[];
+    const [profilePhoto, coverPhoto] = filesUpload;
+
+    const registerUserService = new UpdateUserService(
+      this.usersRepository,
+      this.storageProvider,
+      this.databaseRepository,
+    );
+
+    const response = await registerUserService.execute({
+      userId,
+      birthDate,
+      coverPhoto: coverPhoto ? coverPhoto.filename : null,
+      description,
+      email,
+      profilePhoto: profilePhoto ? profilePhoto.filename : null,
+      username,
+    });
+
+    return res.status(HTTPStatusCode.OK).json(response);
   }
 
   async index(

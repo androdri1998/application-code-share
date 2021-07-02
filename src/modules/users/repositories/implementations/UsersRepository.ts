@@ -13,6 +13,7 @@ import {
   FindUsersByEmailDTO,
   FindUsersByUsernameDTO,
   RemoveUserByIdDTO,
+  UpdateUserByIdDTO,
 } from '../dto';
 
 class UsersRepository implements IUsersRepository {
@@ -20,6 +21,51 @@ class UsersRepository implements IUsersRepository {
 
   constructor(database: IDatabase) {
     this.database = database;
+  }
+
+  async updateUserById({
+    userId,
+    username,
+    description,
+    birthDate,
+    email,
+    profilePhoto,
+    coverPhoto,
+  }: UpdateUserByIdDTO): Promise<User | null> {
+    const updatedAt = generateCurrentDate();
+
+    const user = {
+      id: userId,
+      username,
+      description,
+      birth_date: birthDate,
+      email,
+      profile_photo: profilePhoto,
+      cover_photo: coverPhoto,
+      updated_at: updatedAt,
+    };
+
+    const values = [
+      user.username,
+      user.profile_photo,
+      user.email,
+      user.description,
+      user.cover_photo,
+      user.birth_date,
+      updatedAt,
+      user.id,
+    ];
+
+    await this.database.query(
+      `update users
+        set username=$1, profile_photo=$2, email=$3, description=$4, cover_photo=$5, birth_date=$6, updated_at=$7
+        where id=$8`,
+      values,
+    );
+
+    const userUpdated = this.findUserById({ userId });
+
+    return userUpdated;
   }
 
   async removeUserById({ userId }: RemoveUserByIdDTO): Promise<boolean> {

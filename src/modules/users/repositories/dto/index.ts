@@ -8,6 +8,16 @@ export interface CreateUserDTO {
   coverPhoto: string | null;
 }
 
+export interface UpdateUserByIdDTO {
+  userId: string;
+  username: string;
+  description: string | null;
+  birthDate: string;
+  email: string;
+  profilePhoto: string | null;
+  coverPhoto: string | null;
+}
+
 export interface User {
   id: string;
   username: string;
