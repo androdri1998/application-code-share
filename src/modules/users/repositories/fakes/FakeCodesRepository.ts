@@ -9,6 +9,7 @@ import {
   CreateCodeDTO,
   FindCodeByIdDTO,
   FindCodesByUserIdDTO,
+  FindCodesDTO,
   UpdateAvailableAtByIdDTO,
   UpdateCodeByIdDTO,
   UpdateIsValidByIdDTO,
@@ -25,31 +26,114 @@ class FakeCodesRepository implements ICodesRepository {
     this.codes = [];
   }
 
-  createCode({ code, userId }: CreateCodeDTO): Promise<Code> {
-    throw new Error('Method not implemented.');
+  async findCodes({ limit = 10, offset = 0 }: FindCodesDTO): Promise<Code[]> {
+    const newLimit = offset + limit;
+    const codes = this.codes.slice(offset, newLimit);
+    return codes;
   }
 
-  findCodesByUserId({ userId }: FindCodesByUserIdDTO): Promise<Code[]> {
-    throw new Error('Method not implemented.');
+  async createCode({
+    code,
+    userId,
+    unavailableAt,
+  }: CreateCodeDTO): Promise<Code> {
+    const createdAt = generateCurrentDate();
+    const updatedAt = null;
+
+    const codeValues = {
+      id: uuidv4(),
+      user_id: userId,
+      code,
+      is_valid: true,
+      unavailable_at: unavailableAt || null,
+      created_at: createdAt,
+      updated_at: updatedAt,
+    };
+
+    this.codes.push(codeValues);
+
+    return codeValues;
   }
 
-  findCodeById({ codeId }: FindCodeByIdDTO): Promise<Code> {
-    throw new Error('Method not implemented.');
+  async findCodesByUserId({
+    userId,
+    limit = 10,
+    offset = 0,
+  }: FindCodesByUserIdDTO): Promise<Code[]> {
+    const codes = this.codes.filter(code => code.user_id === userId);
+    const newLimit = offset + limit;
+    return codes.slice(offset, newLimit);
   }
 
-  updateCodeById({ codeId, code }: UpdateCodeByIdDTO): Promise<Code> {
-    throw new Error('Method not implemented.');
+  async findCodeById({ codeId }: FindCodeByIdDTO): Promise<Code | null> {
+    const codeFound = this.codes.find(code => code.id === codeId);
+    return codeFound || null;
   }
 
-  updateAvailableAtById({
+  async updateCodeById({
     codeId,
-    availableAt,
-  }: UpdateAvailableAtByIdDTO): Promise<Code> {
-    throw new Error('Method not implemented.');
+    code,
+  }: UpdateCodeByIdDTO): Promise<Code | null> {
+    const updatedAt = generateCurrentDate();
+
+    const codeToUpdateIndex = this.codes.findIndex(
+      codeToFind => codeToFind.id === codeId,
+    );
+
+    const codeToUpdateObject = this.codes[codeToUpdateIndex];
+    this.codes[codeToUpdateIndex] = {
+      ...codeToUpdateObject,
+      code,
+      updated_at: updatedAt,
+    };
+
+    const codeUpdated = this.findCodeById({ codeId });
+
+    return codeUpdated;
   }
 
-  updateIsValidById({ codeId, isValid }: UpdateIsValidByIdDTO): Promise<Code> {
-    throw new Error('Method not implemented.');
+  async updateAvailableAtById({
+    codeId,
+    unavailableAt,
+  }: UpdateAvailableAtByIdDTO): Promise<Code | null> {
+    const updatedAt = generateCurrentDate();
+
+    const codeToUpdateIndex = this.codes.findIndex(
+      codeToFind => codeToFind.id === codeId,
+    );
+
+    const codeToUpdateObject = this.codes[codeToUpdateIndex];
+    this.codes[codeToUpdateIndex] = {
+      ...codeToUpdateObject,
+      unavailable_at: unavailableAt,
+      updated_at: updatedAt,
+    };
+
+    const codeUpdated = this.findCodeById({ codeId });
+
+    return codeUpdated;
+  }
+
+  async updateIsValidById({
+    codeId,
+    isValid,
+  }: UpdateIsValidByIdDTO): Promise<Code | null> {
+    const updatedAt = generateCurrentDate();
+
+    const codeToUpdateIndex = this.codes.findIndex(
+      codeToFind => codeToFind.id === codeId,
+    );
+
+    const codeToUpdateObject = this.codes[codeToUpdateIndex];
+    this.codes[codeToUpdateIndex] = {
+      ...codeToUpdateObject,
+      is_valid: isValid,
+      updated_at: updatedAt,
+    };
+
+    const codeUpdated = this.findCodeById({ codeId });
+
+    return codeUpdated;
   }
 }
 

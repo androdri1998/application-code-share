@@ -98,9 +98,9 @@ export interface Code {
   user_id: string;
   code: string;
   is_valid: boolean;
-  unavailable_at: string;
+  unavailable_at: string | null;
   created_at: string;
-  updated_at: string;
+  updated_at: string | null;
 }
 
 export interface CreateCodeDTO {
@@ -111,6 +111,13 @@ export interface CreateCodeDTO {
 
 export interface FindCodesByUserIdDTO {
   userId: string;
+  limit?: number;
+  offset?: number;
+}
+
+export interface FindCodesDTO {
+  limit?: number;
+  offset?: number;
 }
 
 export interface FindCodeByIdDTO {
@@ -124,10 +131,10 @@ export interface UpdateCodeByIdDTO {
 
 export interface UpdateAvailableAtByIdDTO {
   codeId: string;
-  availableAt: string;
+  unavailableAt: string;
 }
 
 export interface UpdateIsValidByIdDTO {
   codeId: string;
-  isValid: string;
+  isValid: boolean;
 }
