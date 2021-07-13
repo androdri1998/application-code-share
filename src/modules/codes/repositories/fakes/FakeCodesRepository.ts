@@ -45,7 +45,7 @@ class FakeCodesRepository implements ICodesRepository {
       user_id: userId,
       code,
       is_valid: true,
-      unavailable_at: unavailableAt || null,
+      unavailable_at: unavailableAt ? `${unavailableAt} 23:59:59` : null,
       created_at: createdAt,
       updated_at: updatedAt,
     };

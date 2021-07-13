@@ -10,7 +10,7 @@ import {
 } from './dto';
 
 export default interface ICodesRepository {
-  createCode({ code, userId }: CreateCodeDTO): Promise<Code>;
+  createCode({ code, userId, unavailableAt }: CreateCodeDTO): Promise<Code>;
   findCodesByUserId({
     userId,
     limit,

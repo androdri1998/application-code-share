@@ -24,7 +24,7 @@ create table user_login_codes(
 create table codes(
 	id varchar(50) primary key,
 	user_id varchar(50) not null,
-	code text unique not null,
+	code text not null,
 	is_valid boolean not null,
 	created_at timestamp not null,
 	unavailable_at timestamp,
