@@ -8,6 +8,7 @@ import IUsersRepository from '../../users/repositories/IUsersRepository';
 
 import CreateCodeService from '../services/CreateCodeService';
 import GetCodesService from '../services/GetCodesService';
+import GetCodeService from '../services/GetCodeService';
 
 class CodesController {
   private usersRepository: IUsersRepository;
@@ -27,6 +28,25 @@ class CodesController {
 
     this.store = this.store.bind(this);
     this.index = this.index.bind(this);
+    this.get = this.get.bind(this);
+  }
+
+  async get(
+    req: Request,
+    res: Response,
+  ): Promise<Response<any, Record<string, any>>> {
+    const { codeId } = req.params;
+
+    const getCodeService = new GetCodeService(
+      this.codesRepository,
+      this.databaseRepository,
+    );
+
+    const response = await getCodeService.execute({
+      codeId,
+    });
+
+    return res.status(HTTPStatusCode.OK).json(response);
   }
 
   async index(

@@ -24,3 +24,9 @@ export const getCodesSchemaByUser = {
     page: joi.number().integer(),
   }),
 };
+
+export const getCodeSchemaByUser = {
+  params: joi.object({
+    codeId: joi.string().uuid().required(),
+  }),
+};
