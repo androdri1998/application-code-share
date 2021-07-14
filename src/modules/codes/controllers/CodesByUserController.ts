@@ -6,10 +6,9 @@ import IDatabaseRepository from '../../app/repositories/IDatabaseRepository';
 import ICodesRepository from '../repositories/ICodesRepository';
 import IUsersRepository from '../../users/repositories/IUsersRepository';
 
-import CreateCodeService from '../services/CreateCodeService';
 import GetCodesService from '../services/GetCodesService';
 
-class CodesController {
+class CodesByUserController {
   private usersRepository: IUsersRepository;
 
   private codesRepository: ICodesRepository;
@@ -25,7 +24,6 @@ class CodesController {
     this.codesRepository = codesRepository;
     this.databaseRepository = databaseRepository;
 
-    this.store = this.store.bind(this);
     this.index = this.index.bind(this);
   }
 
@@ -34,6 +32,7 @@ class CodesController {
     res: Response,
   ): Promise<Response<any, Record<string, any>>> {
     const { limit, page } = req.query;
+    const { userId } = req.params;
 
     const getCodesService = new GetCodesService(
       this.usersRepository,
@@ -44,32 +43,11 @@ class CodesController {
     const response = await getCodesService.execute({
       limit: limit ? parseInt(limit as string) : 10,
       page: page ? parseInt(page as string) : 0,
+      userId,
     });
 
     return res.status(HTTPStatusCode.OK).json(response);
   }
-
-  async store(
-    req: Request,
-    res: Response,
-  ): Promise<Response<any, Record<string, any>>> {
-    const { code, unavailable_at: unavailableAt } = req.body;
-    const userId = req.user?.id;
-
-    const createCodeService = new CreateCodeService(
-      this.usersRepository,
-      this.codesRepository,
-      this.databaseRepository,
-    );
-
-    const response = await createCodeService.execute({
-      code,
-      unavailableAt,
-      userId,
-    });
-
-    return res.status(HTTPStatusCode.CREATED).json(response);
-  }
 }
 
-export default CodesController;
+export default CodesByUserController;

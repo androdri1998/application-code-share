@@ -2,6 +2,8 @@ import { Router } from 'express';
 import multer from 'multer';
 
 import UsersController from '../controllers/UsersController';
+import CodesByUserController from '../../codes/controllers/CodesByUserController';
+import CodesRepository from '../../codes/repositories/Implementations/CodesRepository';
 import UsersRepository from '../repositories/implementations/UsersRepository';
 import UserLoginCodeRepository from '../repositories/implementations/UserLoginCodeRepository';
 import DatabaseRepository from '../../app/repositories/implementations/DatabaseRepository';
@@ -10,6 +12,7 @@ import uploadConfig from '../../../config/upload';
 import validateParams from '../../app/middlewares/validate-params';
 import ensureAuthentication from '../middlewares/ensureAuthentication';
 import StorageProvider from '../../app/providers/implementations/StorageProvider';
+import { getCodesSchemaByUser } from '../../codes/schemas/codes.schema';
 import {
   registerUserSchema,
   getUserSchema,
@@ -25,12 +28,19 @@ const userRoutes = Router();
 const storageProvider = new StorageProvider();
 const usersRepository = new UsersRepository(database);
 const userLoginCodeRepository = new UserLoginCodeRepository(database);
+const codesRepository = new CodesRepository(database);
 const databaseRepository = new DatabaseRepository(database);
 
 const usersController = new UsersController(
   usersRepository,
   userLoginCodeRepository,
   storageProvider,
+  databaseRepository,
+);
+
+const codesByUserController = new CodesByUserController(
+  usersRepository,
+  codesRepository,
   databaseRepository,
 );
 
@@ -50,6 +60,12 @@ userRoutes.get(
   '/:userId',
   [ensureAuthentication, validateParams(getUserSchema)],
   usersController.get,
+);
+
+userRoutes.get(
+  '/:userId/codes',
+  [ensureAuthentication, validateParams(getCodesSchemaByUser)],
+  codesByUserController.index,
 );
 
 userRoutes.delete(

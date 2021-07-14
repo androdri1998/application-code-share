@@ -7,3 +7,20 @@ export const createCodeSchema = {
     code: joi.string().required(),
   }),
 };
+
+export const getCodesSchema = {
+  query: joi.object({
+    limit: joi.number().integer(),
+    page: joi.number().integer(),
+  }),
+};
+
+export const getCodesSchemaByUser = {
+  params: joi.object({
+    userId: joi.string().uuid().required(),
+  }),
+  query: joi.object({
+    limit: joi.number().integer(),
+    page: joi.number().integer(),
+  }),
+};

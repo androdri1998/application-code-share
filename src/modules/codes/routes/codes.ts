@@ -6,7 +6,7 @@ import DatabaseRepository from '../../app/repositories/implementations/DatabaseR
 import database from '../../app/db';
 import validateParams from '../../app/middlewares/validate-params';
 import ensureAuthentication from '../../users/middlewares/ensureAuthentication';
-import { createCodeSchema } from '../schemas/codes.schema';
+import { createCodeSchema, getCodesSchema } from '../schemas/codes.schema';
 import CodesController from '../controllers/CodesController';
 
 const codesRoutes = Router();
@@ -25,6 +25,12 @@ codesRoutes.post(
   '/',
   [ensureAuthentication, validateParams(createCodeSchema)],
   codesController.store,
+);
+
+codesRoutes.get(
+  '/',
+  [ensureAuthentication, validateParams(getCodesSchema)],
+  codesController.index,
 );
 
 export default codesRoutes;

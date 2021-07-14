@@ -86,7 +86,7 @@ class CodesRepository implements ICodesRepository {
       `select *
         from codes
         where is_valid=true
-        limit $2 offset $3;`,
+        limit $1 offset $2;`,
       values,
     );
 
