@@ -44,3 +44,7 @@ export interface FindCodesDTO {
   limit?: number;
   offset?: number;
 }
+
+export interface RemoveCodeByIdDTO {
+  codeId: string;
+}

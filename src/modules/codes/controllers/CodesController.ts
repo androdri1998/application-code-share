@@ -9,6 +9,7 @@ import IUsersRepository from '../../users/repositories/IUsersRepository';
 import CreateCodeService from '../services/CreateCodeService';
 import GetCodesService from '../services/GetCodesService';
 import GetCodeService from '../services/GetCodeService';
+import RemoveCodeService from '../services/RemoveCodeService';
 
 class CodesController {
   private usersRepository: IUsersRepository;
@@ -29,6 +30,25 @@ class CodesController {
     this.store = this.store.bind(this);
     this.index = this.index.bind(this);
     this.get = this.get.bind(this);
+    this.destroy = this.destroy.bind(this);
+  }
+
+  async destroy(
+    req: Request,
+    res: Response,
+  ): Promise<Response<any, Record<string, any>>> {
+    const { codeId } = req.params;
+
+    const removeCodeService = new RemoveCodeService(
+      this.codesRepository,
+      this.databaseRepository,
+    );
+
+    const response = await removeCodeService.execute({
+      codeId,
+    });
+
+    return res.status(HTTPStatusCode.NO_CONTENT).json(response);
   }
 
   async get(

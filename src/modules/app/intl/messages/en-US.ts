@@ -3,6 +3,7 @@ const messages = {
     GENERATE_USER_LOGIN_CODE: 'Successful user login code generated',
     CHECK_USER_LOGIN_CODE: 'Successful user login code checked',
     USER_DELETED_WITH_SUCCESS: 'User deleted with success',
+    CODE_DELETED_WITH_SUCCESS: 'Code deleted with success',
   },
   errors: {
     INTERNAL_ERROR_SERVER: 'Internal Error Server',

@@ -10,6 +10,7 @@ import {
   FindCodeByIdDTO,
   FindCodesByUserIdDTO,
   FindCodesDTO,
+  RemoveCodeByIdDTO,
   UpdateAvailableAtByIdDTO,
   UpdateCodeByIdDTO,
   UpdateIsValidByIdDTO,
@@ -24,6 +25,14 @@ class FakeCodesRepository implements ICodesRepository {
     this.database = database;
 
     this.codes = [];
+  }
+
+  async removeCodeById({ codeId }: RemoveCodeByIdDTO): Promise<boolean> {
+    const newCodes = this.codes.filter(code => code.id !== codeId);
+    this.codes = newCodes;
+
+    const isDeleted = true;
+    return isDeleted;
   }
 
   async findCodes({ limit = 10, offset = 0 }: FindCodesDTO): Promise<Code[]> {

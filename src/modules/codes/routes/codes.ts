@@ -10,6 +10,7 @@ import {
   createCodeSchema,
   getCodesSchema,
   getCodeSchemaByUser,
+  removeCodeSchemaByUser,
 } from '../schemas/codes.schema';
 import CodesController from '../controllers/CodesController';
 
@@ -41,6 +42,12 @@ codesRoutes.get(
   '/:codeId',
   [ensureAuthentication, validateParams(getCodeSchemaByUser)],
   codesController.get,
+);
+
+codesRoutes.delete(
+  '/:codeId',
+  [ensureAuthentication, validateParams(removeCodeSchemaByUser)],
+  codesController.destroy,
 );
 
 export default codesRoutes;

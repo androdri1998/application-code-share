@@ -9,6 +9,7 @@ import {
   CreateCodeDTO,
   FindCodeByIdDTO,
   FindCodesByUserIdDTO,
+  RemoveCodeByIdDTO,
   UpdateAvailableAtByIdDTO,
   UpdateCodeByIdDTO,
   UpdateIsValidByIdDTO,
@@ -19,6 +20,17 @@ class CodesRepository implements ICodesRepository {
 
   constructor(database: IDatabase) {
     this.database = database;
+  }
+
+  async removeCodeById({ codeId }: RemoveCodeByIdDTO): Promise<boolean> {
+    const values = [codeId];
+    await this.database.query(
+      `delete from codes where id=$1 and is_valid=true;`,
+      values,
+    );
+
+    const isDeleted = true;
+    return isDeleted;
   }
 
   async createCode({

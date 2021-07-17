@@ -7,6 +7,7 @@ import {
   UpdateAvailableAtByIdDTO,
   UpdateIsValidByIdDTO,
   FindCodesDTO,
+  RemoveCodeByIdDTO,
 } from './dto';
 
 export default interface ICodesRepository {
@@ -18,6 +19,7 @@ export default interface ICodesRepository {
   }: FindCodesByUserIdDTO): Promise<Code[]>;
   findCodes({ limit, offset }: FindCodesDTO): Promise<Code[]>;
   findCodeById({ codeId }: FindCodeByIdDTO): Promise<Code | null>;
+  removeCodeById({ codeId }: RemoveCodeByIdDTO): Promise<boolean>;
   updateCodeById({ codeId, code }: UpdateCodeByIdDTO): Promise<Code | null>;
   updateAvailableAtById({
     codeId,
