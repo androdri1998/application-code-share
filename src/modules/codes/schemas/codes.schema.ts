@@ -36,3 +36,12 @@ export const removeCodeSchemaByUser = {
     codeId: joi.string().uuid().required(),
   }),
 };
+
+export const updateCodeSchemaByUser = {
+  params: joi.object({
+    codeId: joi.string().uuid().required(),
+  }),
+  body: joi.object({
+    code: joi.string().required(),
+  }),
+};

@@ -10,6 +10,7 @@ import CreateCodeService from '../services/CreateCodeService';
 import GetCodesService from '../services/GetCodesService';
 import GetCodeService from '../services/GetCodeService';
 import RemoveCodeService from '../services/RemoveCodeService';
+import UpdateCodeByCodeIdService from '../services/UpdateCodeByCodeIdService';
 
 class CodesController {
   private usersRepository: IUsersRepository;
@@ -31,6 +32,27 @@ class CodesController {
     this.index = this.index.bind(this);
     this.get = this.get.bind(this);
     this.destroy = this.destroy.bind(this);
+    this.update = this.update.bind(this);
+  }
+
+  async update(
+    req: Request,
+    res: Response,
+  ): Promise<Response<any, Record<string, any>>> {
+    const { codeId } = req.params;
+    const { code } = req.body;
+
+    const updateCodeByCodeIdService = new UpdateCodeByCodeIdService(
+      this.codesRepository,
+      this.databaseRepository,
+    );
+
+    const response = await updateCodeByCodeIdService.execute({
+      codeId,
+      code,
+    });
+
+    return res.status(HTTPStatusCode.OK).json(response);
   }
 
   async destroy(
