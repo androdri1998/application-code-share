@@ -15,7 +15,7 @@ interface ExecuteResponse {
   code: Code;
 }
 
-class UpdateCodeByCodeIdService {
+class updateCodeService {
   private codeRepository: ICodesRepository;
 
   private databaseRepository: IDatabaseRepository;
@@ -64,11 +64,10 @@ class UpdateCodeByCodeIdService {
 
       return { code: codeUpdated };
     } catch (error) {
-      console.log(error);
       await this.databaseRepository.rollback();
       throw error;
     }
   }
 }
 
-export default UpdateCodeByCodeIdService;
+export default updateCodeService;

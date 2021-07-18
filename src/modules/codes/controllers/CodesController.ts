@@ -10,7 +10,7 @@ import CreateCodeService from '../services/CreateCodeService';
 import GetCodesService from '../services/GetCodesService';
 import GetCodeService from '../services/GetCodeService';
 import RemoveCodeService from '../services/RemoveCodeService';
-import UpdateCodeByCodeIdService from '../services/UpdateCodeByCodeIdService';
+import UpdateCodeService from '../services/UpdateCodeService';
 
 class CodesController {
   private usersRepository: IUsersRepository;
@@ -42,12 +42,12 @@ class CodesController {
     const { codeId } = req.params;
     const { code } = req.body;
 
-    const updateCodeByCodeIdService = new UpdateCodeByCodeIdService(
+    const updateCodeService = new UpdateCodeService(
       this.codesRepository,
       this.databaseRepository,
     );
 
-    const response = await updateCodeByCodeIdService.execute({
+    const response = await updateCodeService.execute({
       codeId,
       code,
     });

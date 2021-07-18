@@ -4,15 +4,15 @@ import FakeCodesRepository from '../repositories/fakes/FakeCodesRepository';
 import IDatabaseRepository from '../../app/repositories/IDatabaseRepository';
 import FakeDatabaseRepository from '../../app/repositories/fakes/FakeDatabaseRepository';
 import GetCodeService from './GetCodeService';
-import UpdateCodeByCodeIdService from './UpdateCodeByCodeIdService';
+import UpdateCodeService from './UpdateCodeService';
 import AppError from '../../app/errors/AppError';
 
 let fakeCodesRepository: ICodesRepository;
 let fakeDatabaseRepository: IDatabaseRepository;
 let getCodeService: GetCodeService;
-let updateCodeByCodeIdService: UpdateCodeByCodeIdService;
+let updateCodeService: UpdateCodeService;
 
-describe('UpdateCodeByCodeIdService', () => {
+describe('UpdateCodeService', () => {
   beforeEach(() => {
     fakeDatabaseRepository = new FakeDatabaseRepository({} as IDatabase);
     fakeCodesRepository = new FakeCodesRepository({} as IDatabase);
@@ -21,7 +21,7 @@ describe('UpdateCodeByCodeIdService', () => {
       fakeCodesRepository,
       fakeDatabaseRepository,
     );
-    updateCodeByCodeIdService = new UpdateCodeByCodeIdService(
+    updateCodeService = new UpdateCodeService(
       fakeCodesRepository,
       fakeDatabaseRepository,
     );
@@ -40,7 +40,7 @@ describe('UpdateCodeByCodeIdService', () => {
       unavailableAt: code.unavailable_at,
     });
 
-    await updateCodeByCodeIdService.execute({
+    await updateCodeService.execute({
       codeId: codeCreated.id,
       code: 'code-updated',
     });
@@ -54,7 +54,7 @@ describe('UpdateCodeByCodeIdService', () => {
 
   it('should not to be able to update code a code-non-existent', async () => {
     await expect(
-      updateCodeByCodeIdService.execute({
+      updateCodeService.execute({
         codeId: 'code-non-existent',
         code: 'code',
       }),
