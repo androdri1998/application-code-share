@@ -27,6 +27,13 @@ class FakeCodesRepository implements ICodesRepository {
     this.codes = [];
   }
 
+  async findCodeByIdWithoutValidate({
+    codeId,
+  }: FindCodeByIdDTO): Promise<Code | null> {
+    const codeFound = this.codes.find(code => code.id === codeId);
+    return codeFound || null;
+  }
+
   async removeCodeById({ codeId }: RemoveCodeByIdDTO): Promise<boolean> {
     const newCodes = this.codes.filter(code => code.id !== codeId);
     this.codes = newCodes;
@@ -69,13 +76,17 @@ class FakeCodesRepository implements ICodesRepository {
     limit = 10,
     offset = 0,
   }: FindCodesByUserIdDTO): Promise<Code[]> {
-    const codes = this.codes.filter(code => code.user_id === userId);
+    const codes = this.codes.filter(
+      code => code.user_id === userId && code.is_valid === true,
+    );
     const newLimit = offset + limit;
     return codes.slice(offset, newLimit);
   }
 
   async findCodeById({ codeId }: FindCodeByIdDTO): Promise<Code | null> {
-    const codeFound = this.codes.find(code => code.id === codeId);
+    const codeFound = this.codes.find(
+      code => code.id === codeId && code.is_valid === true,
+    );
     return codeFound || null;
   }
 
@@ -140,7 +151,7 @@ class FakeCodesRepository implements ICodesRepository {
       updated_at: updatedAt,
     };
 
-    const codeUpdated = this.findCodeById({ codeId });
+    const codeUpdated = this.findCodeByIdWithoutValidate({ codeId });
 
     return codeUpdated;
   }

@@ -22,6 +22,19 @@ class CodesRepository implements ICodesRepository {
     this.database = database;
   }
 
+  async findCodeByIdWithoutValidate({
+    codeId,
+  }: FindCodeByIdDTO): Promise<Code | null> {
+    const values = [codeId];
+    const response = await this.database.query(
+      `select * from codes where id=$1`,
+      values,
+    );
+
+    const code = response.results[0];
+    return code || null;
+  }
+
   async removeCodeById({ codeId }: RemoveCodeByIdDTO): Promise<boolean> {
     const values = [codeId];
     await this.database.query(
@@ -169,7 +182,7 @@ class CodesRepository implements ICodesRepository {
       values,
     );
 
-    const codeUpdated = this.findCodeById({ codeId });
+    const codeUpdated = this.findCodeByIdWithoutValidate({ codeId });
 
     return codeUpdated;
   }

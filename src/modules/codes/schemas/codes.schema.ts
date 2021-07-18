@@ -15,7 +15,7 @@ export const getCodesSchema = {
   }),
 };
 
-export const getCodesSchemaByUser = {
+export const getCodesByUserSchema = {
   params: joi.object({
     userId: joi.string().uuid().required(),
   }),
@@ -25,23 +25,32 @@ export const getCodesSchemaByUser = {
   }),
 };
 
-export const getCodeSchemaByUser = {
+export const getCodeSchema = {
   params: joi.object({
     codeId: joi.string().uuid().required(),
   }),
 };
 
-export const removeCodeSchemaByUser = {
+export const removeCodeSchema = {
   params: joi.object({
     codeId: joi.string().uuid().required(),
   }),
 };
 
-export const updateCodeSchemaByUser = {
+export const updateCodeSchema = {
   params: joi.object({
     codeId: joi.string().uuid().required(),
   }),
   body: joi.object({
     code: joi.string().required(),
+  }),
+};
+
+export const updateValidateCodeSchema = {
+  params: joi.object({
+    codeId: joi.string().uuid().required(),
+  }),
+  body: joi.object({
+    is_valid: joi.boolean().required(),
   }),
 };

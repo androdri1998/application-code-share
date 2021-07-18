@@ -12,7 +12,7 @@ import uploadConfig from '../../../config/upload';
 import validateParams from '../../app/middlewares/validate-params';
 import ensureAuthentication from '../middlewares/ensureAuthentication';
 import StorageProvider from '../../app/providers/implementations/StorageProvider';
-import { getCodesSchemaByUser } from '../../codes/schemas/codes.schema';
+import { getCodesByUserSchema } from '../../codes/schemas/codes.schema';
 import {
   registerUserSchema,
   getUserSchema,
@@ -64,7 +64,7 @@ userRoutes.get(
 
 userRoutes.get(
   '/:userId/codes',
-  [ensureAuthentication, validateParams(getCodesSchemaByUser)],
+  [ensureAuthentication, validateParams(getCodesByUserSchema)],
   codesByUserController.index,
 );
 

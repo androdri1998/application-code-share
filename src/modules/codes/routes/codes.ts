@@ -9,11 +9,13 @@ import ensureAuthentication from '../../users/middlewares/ensureAuthentication';
 import {
   createCodeSchema,
   getCodesSchema,
-  getCodeSchemaByUser,
-  removeCodeSchemaByUser,
-  updateCodeSchemaByUser,
+  getCodeSchema,
+  removeCodeSchema,
+  updateCodeSchema,
+  updateValidateCodeSchema,
 } from '../schemas/codes.schema';
 import CodesController from '../controllers/CodesController';
+import UpdateValidateCodeController from '../controllers/UpdateValidateCodeController';
 
 const codesRoutes = Router();
 
@@ -22,6 +24,12 @@ const codesRepository = new CodesRepository(database);
 const databaseRepository = new DatabaseRepository(database);
 
 const codesController = new CodesController(
+  usersRepository,
+  codesRepository,
+  databaseRepository,
+);
+
+const updateValidateCodeController = new UpdateValidateCodeController(
   usersRepository,
   codesRepository,
   databaseRepository,
@@ -41,20 +49,26 @@ codesRoutes.get(
 
 codesRoutes.get(
   '/:codeId',
-  [ensureAuthentication, validateParams(getCodeSchemaByUser)],
+  [ensureAuthentication, validateParams(getCodeSchema)],
   codesController.get,
 );
 
 codesRoutes.delete(
   '/:codeId',
-  [ensureAuthentication, validateParams(removeCodeSchemaByUser)],
+  [ensureAuthentication, validateParams(removeCodeSchema)],
   codesController.destroy,
 );
 
 codesRoutes.patch(
   '/:codeId',
-  [ensureAuthentication, validateParams(updateCodeSchemaByUser)],
+  [ensureAuthentication, validateParams(updateCodeSchema)],
   codesController.update,
+);
+
+codesRoutes.patch(
+  '/:codeId/validate',
+  [ensureAuthentication, validateParams(updateValidateCodeSchema)],
+  updateValidateCodeController.update,
 );
 
 export default codesRoutes;
