@@ -32,7 +32,7 @@ export interface UpdateCodeByIdDTO {
 
 export interface UpdateAvailableAtByIdDTO {
   codeId: string;
-  unavailableAt: string;
+  unavailableAt: string | null;
 }
 
 export interface UpdateIsValidByIdDTO {

@@ -154,7 +154,10 @@ class CodesRepository implements ICodesRepository {
     unavailableAt,
   }: UpdateAvailableAtByIdDTO): Promise<Code | null> {
     const updatedAt = generateCurrentDate();
-    const values = [unavailableAt, updatedAt, codeId];
+    const unavailableAtValue = unavailableAt
+      ? `${unavailableAt} 23:59:59`
+      : null;
+    const values = [unavailableAtValue, updatedAt, codeId];
 
     await this.database.query(
       `update codes

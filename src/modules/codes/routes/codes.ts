@@ -13,9 +13,11 @@ import {
   removeCodeSchema,
   updateCodeSchema,
   updateValidateCodeSchema,
+  updateUnavailableAtCodeSchema,
 } from '../schemas/codes.schema';
 import CodesController from '../controllers/CodesController';
 import UpdateValidateCodeController from '../controllers/UpdateValidateCodeController';
+import UpdateUnavailableAtController from '../controllers/UpdateUnavailableAtController';
 
 const codesRoutes = Router();
 
@@ -30,6 +32,12 @@ const codesController = new CodesController(
 );
 
 const updateValidateCodeController = new UpdateValidateCodeController(
+  usersRepository,
+  codesRepository,
+  databaseRepository,
+);
+
+const updateUnavailableAtController = new UpdateUnavailableAtController(
   usersRepository,
   codesRepository,
   databaseRepository,
@@ -69,6 +77,12 @@ codesRoutes.patch(
   '/:codeId/validate',
   [ensureAuthentication, validateParams(updateValidateCodeSchema)],
   updateValidateCodeController.update,
+);
+
+codesRoutes.patch(
+  '/:codeId/unavailable-at',
+  [ensureAuthentication, validateParams(updateUnavailableAtCodeSchema)],
+  updateUnavailableAtController.update,
 );
 
 export default codesRoutes;

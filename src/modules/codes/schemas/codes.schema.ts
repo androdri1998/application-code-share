@@ -54,3 +54,12 @@ export const updateValidateCodeSchema = {
     is_valid: joi.boolean().required(),
   }),
 };
+
+export const updateUnavailableAtCodeSchema = {
+  params: joi.object({
+    codeId: joi.string().uuid().required(),
+  }),
+  body: joi.object({
+    unavailable_at: joi.string().allow(null).required(),
+  }),
+};

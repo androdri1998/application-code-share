@@ -117,6 +117,9 @@ class FakeCodesRepository implements ICodesRepository {
     unavailableAt,
   }: UpdateAvailableAtByIdDTO): Promise<Code | null> {
     const updatedAt = generateCurrentDate();
+    const unavailableAtValue = unavailableAt
+      ? `${unavailableAt} 23:59:59`
+      : null;
 
     const codeToUpdateIndex = this.codes.findIndex(
       codeToFind => codeToFind.id === codeId,
@@ -125,7 +128,7 @@ class FakeCodesRepository implements ICodesRepository {
     const codeToUpdateObject = this.codes[codeToUpdateIndex];
     this.codes[codeToUpdateIndex] = {
       ...codeToUpdateObject,
-      unavailable_at: unavailableAt,
+      unavailable_at: unavailableAtValue,
       updated_at: updatedAt,
     };
 
