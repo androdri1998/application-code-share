@@ -20,17 +20,17 @@ interface ExecuteResponse {
 class CreateCodeService {
   private usersRepository: IUsersRepository;
 
-  private codeRepository: ICodesRepository;
+  private codesRepository: ICodesRepository;
 
   private databaseRepository: IDatabaseRepository;
 
   constructor(
     usersRepository: IUsersRepository,
-    codeRepository: ICodesRepository,
+    codesRepository: ICodesRepository,
     databaseRepository: IDatabaseRepository,
   ) {
     this.usersRepository = usersRepository;
-    this.codeRepository = codeRepository;
+    this.codesRepository = codesRepository;
     this.databaseRepository = databaseRepository;
 
     this.execute = this.execute.bind(this);
@@ -53,7 +53,7 @@ class CreateCodeService {
         );
       }
 
-      const codeCreated = await this.codeRepository.createCode({
+      const codeCreated = await this.codesRepository.createCode({
         code,
         userId,
         unavailableAt,

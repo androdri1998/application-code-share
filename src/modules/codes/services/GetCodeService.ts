@@ -15,15 +15,15 @@ interface ExecuteResponse {
 }
 
 class GetCodeService {
-  private codeRepository: ICodesRepository;
+  private codesRepository: ICodesRepository;
 
   private databaseRepository: IDatabaseRepository;
 
   constructor(
-    codeRepository: ICodesRepository,
+    codesRepository: ICodesRepository,
     databaseRepository: IDatabaseRepository,
   ) {
-    this.codeRepository = codeRepository;
+    this.codesRepository = codesRepository;
     this.databaseRepository = databaseRepository;
 
     this.execute = this.execute.bind(this);
@@ -33,7 +33,7 @@ class GetCodeService {
     try {
       await this.databaseRepository.beginTransaction();
 
-      const code = await this.codeRepository.findCodeById({
+      const code = await this.codesRepository.findCodeById({
         codeId,
       });
 

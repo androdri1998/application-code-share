@@ -8,7 +8,7 @@ import {
 } from './dto';
 
 export default interface ICodesRepository {
-  createCode({
+  createBoughtCode({
     buyer,
     codeId,
     unavailableAt,
@@ -16,7 +16,9 @@ export default interface ICodesRepository {
     seller,
   }: CreateBoughtCodeDTO): Promise<BoughtCode>;
   removeBoughtCode({ boughtCodeId }: RemoveBoughtCodeDTO): Promise<boolean>;
-  findCodeById({ boughtCodeId }: FindBoughtCodeByIdDTO): Promise<BoughtCode>;
+  findBoughtCodeById({
+    boughtCodeId,
+  }: FindBoughtCodeByIdDTO): Promise<BoughtCode | null>;
   findBoughtCodesByBuyerId({
     buyerId,
     limit,

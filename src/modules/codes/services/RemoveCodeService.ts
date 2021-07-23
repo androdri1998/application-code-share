@@ -14,15 +14,15 @@ interface ExecuteResponse {
 }
 
 class RemoveCodeService {
-  private codeRepository: ICodesRepository;
+  private codesRepository: ICodesRepository;
 
   private databaseRepository: IDatabaseRepository;
 
   constructor(
-    codeRepository: ICodesRepository,
+    codesRepository: ICodesRepository,
     databaseRepository: IDatabaseRepository,
   ) {
-    this.codeRepository = codeRepository;
+    this.codesRepository = codesRepository;
     this.databaseRepository = databaseRepository;
 
     this.execute = this.execute.bind(this);
@@ -32,7 +32,7 @@ class RemoveCodeService {
     try {
       await this.databaseRepository.beginTransaction();
 
-      const code = await this.codeRepository.findCodeById({
+      const code = await this.codesRepository.findCodeById({
         codeId,
       });
 
@@ -43,7 +43,7 @@ class RemoveCodeService {
         );
       }
 
-      await this.codeRepository.removeCodeById({
+      await this.codesRepository.removeCodeById({
         codeId,
       });
 

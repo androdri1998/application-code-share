@@ -16,15 +16,15 @@ interface ExecuteResponse {
 }
 
 class updateCodeService {
-  private codeRepository: ICodesRepository;
+  private codesRepository: ICodesRepository;
 
   private databaseRepository: IDatabaseRepository;
 
   constructor(
-    codeRepository: ICodesRepository,
+    codesRepository: ICodesRepository,
     databaseRepository: IDatabaseRepository,
   ) {
-    this.codeRepository = codeRepository;
+    this.codesRepository = codesRepository;
     this.databaseRepository = databaseRepository;
 
     this.execute = this.execute.bind(this);
@@ -37,7 +37,7 @@ class updateCodeService {
     try {
       await this.databaseRepository.beginTransaction();
 
-      const code = await this.codeRepository.findCodeById({
+      const code = await this.codesRepository.findCodeById({
         codeId,
       });
 
@@ -48,7 +48,7 @@ class updateCodeService {
         );
       }
 
-      const codeUpdated = await this.codeRepository.updateCodeById({
+      const codeUpdated = await this.codesRepository.updateCodeById({
         codeId,
         code: codeToUpdate,
       });

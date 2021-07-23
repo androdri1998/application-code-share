@@ -20,17 +20,17 @@ interface ExecuteResponse {
 class GetCodesService {
   private usersRepository: IUsersRepository;
 
-  private codeRepository: ICodesRepository;
+  private codesRepository: ICodesRepository;
 
   private databaseRepository: IDatabaseRepository;
 
   constructor(
     usersRepository: IUsersRepository,
-    codeRepository: ICodesRepository,
+    codesRepository: ICodesRepository,
     databaseRepository: IDatabaseRepository,
   ) {
     this.usersRepository = usersRepository;
-    this.codeRepository = codeRepository;
+    this.codesRepository = codesRepository;
     this.databaseRepository = databaseRepository;
 
     this.execute = this.execute.bind(this);
@@ -57,13 +57,13 @@ class GetCodesService {
             HTTPStatusCode.NOT_FOUND,
           );
         }
-        codes = await this.codeRepository.findCodesByUserId({
+        codes = await this.codesRepository.findCodesByUserId({
           userId,
           limit,
           offset,
         });
       } else {
-        codes = await this.codeRepository.findCodes({
+        codes = await this.codesRepository.findCodes({
           limit,
           offset,
         });

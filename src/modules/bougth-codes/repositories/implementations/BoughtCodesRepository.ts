@@ -20,7 +20,7 @@ class BoughtCodesRepository implements IBoughtCodesRepository {
     this.database = database;
   }
 
-  async createCode({
+  async createBoughtCode({
     buyer,
     codeId,
     code,
@@ -72,9 +72,9 @@ class BoughtCodesRepository implements IBoughtCodesRepository {
     return isDeleted;
   }
 
-  async findCodeById({
+  async findBoughtCodeById({
     boughtCodeId,
-  }: FindBoughtCodeByIdDTO): Promise<BoughtCode> {
+  }: FindBoughtCodeByIdDTO): Promise<BoughtCode | null> {
     const values = [boughtCodeId];
     const response = await this.database.query(
       `select * from bought_codes where id=$1;`,

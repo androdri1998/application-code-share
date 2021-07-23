@@ -24,7 +24,7 @@ class FakeBoughtCodesRepository implements IBoughtCodesRepository {
     this.boughtCodes = [];
   }
 
-  async createCode({
+  async createBoughtCode({
     buyer,
     codeId,
     code,
@@ -62,9 +62,9 @@ class FakeBoughtCodesRepository implements IBoughtCodesRepository {
     return isDeleted;
   }
 
-  async findCodeById({
+  async findBoughtCodeById({
     boughtCodeId,
-  }: FindBoughtCodeByIdDTO): Promise<BoughtCode> {
+  }: FindBoughtCodeByIdDTO): Promise<BoughtCode | null> {
     const boughtCodeFound = this.boughtCodes.find(
       boughtCode => boughtCode.id === boughtCodeId,
     );

@@ -20,17 +20,17 @@ interface ExecuteResponse {
 class UpdateUnavailableAtService {
   private usersRepository: IUsersRepository;
 
-  private codeRepository: ICodesRepository;
+  private codesRepository: ICodesRepository;
 
   private databaseRepository: IDatabaseRepository;
 
   constructor(
     usersRepository: IUsersRepository,
-    codeRepository: ICodesRepository,
+    codesRepository: ICodesRepository,
     databaseRepository: IDatabaseRepository,
   ) {
     this.usersRepository = usersRepository;
-    this.codeRepository = codeRepository;
+    this.codesRepository = codesRepository;
     this.databaseRepository = databaseRepository;
 
     this.execute = this.execute.bind(this);
@@ -54,7 +54,7 @@ class UpdateUnavailableAtService {
         );
       }
 
-      const code = await this.codeRepository.findCodeById({
+      const code = await this.codesRepository.findCodeById({
         codeId,
       });
       if (!code) {
@@ -71,7 +71,7 @@ class UpdateUnavailableAtService {
         );
       }
 
-      const codeUpdated = await this.codeRepository.updateAvailableAtById({
+      const codeUpdated = await this.codesRepository.updateAvailableAtById({
         codeId,
         unavailableAt,
       });

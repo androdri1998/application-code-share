@@ -20,17 +20,17 @@ interface ExecuteResponse {
 class UpdateValidateCodeService {
   private usersRepository: IUsersRepository;
 
-  private codeRepository: ICodesRepository;
+  private codesRepository: ICodesRepository;
 
   private databaseRepository: IDatabaseRepository;
 
   constructor(
     usersRepository: IUsersRepository,
-    codeRepository: ICodesRepository,
+    codesRepository: ICodesRepository,
     databaseRepository: IDatabaseRepository,
   ) {
     this.usersRepository = usersRepository;
-    this.codeRepository = codeRepository;
+    this.codesRepository = codesRepository;
     this.databaseRepository = databaseRepository;
 
     this.execute = this.execute.bind(this);
@@ -54,7 +54,7 @@ class UpdateValidateCodeService {
         );
       }
 
-      const code = await this.codeRepository.findCodeByIdWithoutValidate({
+      const code = await this.codesRepository.findCodeByIdWithoutValidate({
         codeId,
       });
       if (!code) {
@@ -71,7 +71,7 @@ class UpdateValidateCodeService {
         );
       }
 
-      const codeUpdated = await this.codeRepository.updateIsValidById({
+      const codeUpdated = await this.codesRepository.updateIsValidById({
         codeId,
         isValid,
       });
