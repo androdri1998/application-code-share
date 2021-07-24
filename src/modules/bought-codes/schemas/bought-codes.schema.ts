@@ -6,3 +6,9 @@ export const createBoughtCodeSchema = {
     codeId: joi.string().uuid().required(),
   }),
 };
+
+export const removeBoughtCodeSchema = {
+  params: joi.object({
+    boughtCodeId: joi.string().uuid().required(),
+  }),
+};

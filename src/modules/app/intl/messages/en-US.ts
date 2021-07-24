@@ -3,6 +3,7 @@ const messages = {
     GENERATE_USER_LOGIN_CODE: 'Successful user login code generated',
     CHECK_USER_LOGIN_CODE: 'Successful user login code checked',
     USER_DELETED_WITH_SUCCESS: 'User deleted with success',
+    BOUGHT_CODE_DELETED_WITH_SUCCESS: 'Bought code deleted with success',
     CODE_DELETED_WITH_SUCCESS: 'Code deleted with success',
     CODE_INVALIDATE_SUCCESSFUL: 'Code invalidate successful',
   },
@@ -17,8 +18,10 @@ const messages = {
     USER_ALREADY_EXISTS: 'User already exists',
     CODE_IS_NOT_VALID: 'Code is not valid',
     CODE_NOT_FOUND: 'Code not found',
+    BOUGHT_CODE_NOT_FOUND: 'Bought code not found',
     CODE_CANNOT_BE_UPDATED_BY_CURRENT_USER:
       'Code cannot be updated by current user',
+    USER_CANNOT_DO_THIS_ACTION: 'User cannot do this action',
   },
   keys: {
     logs: {

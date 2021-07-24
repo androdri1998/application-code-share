@@ -58,7 +58,7 @@ class CreateBoughtCodeSevice {
       if (buyer === code.user_id) {
         throw new AppError(
           messages.errors.BUYER_AND_SELLER_ARE_THE_SAME,
-          HTTPStatusCode.NOT_FOUND,
+          HTTPStatusCode.CONFLICT,
         );
       }
 

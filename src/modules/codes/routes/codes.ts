@@ -3,7 +3,7 @@ import { Router } from 'express';
 import UsersRepository from '../../users/repositories/implementations/UsersRepository';
 import CodesRepository from '../repositories/Implementations/CodesRepository';
 import DatabaseRepository from '../../app/repositories/implementations/DatabaseRepository';
-import BoughtCodesRepository from '../../bougth-codes/repositories/implementations/BoughtCodesRepository';
+import BoughtCodesRepository from '../../bought-codes/repositories/implementations/BoughtCodesRepository';
 import database from '../../app/db';
 import validateParams from '../../app/middlewares/validate-params';
 import ensureAuthentication from '../../users/middlewares/ensureAuthentication';
@@ -16,11 +16,11 @@ import {
   updateValidateCodeSchema,
   updateUnavailableAtCodeSchema,
 } from '../schemas/codes.schema';
-import { createBoughtCodeSchema } from '../../bougth-codes/schemas/bought-codes.schema';
+import { createBoughtCodeSchema } from '../../bought-codes/schemas/bought-codes.schema';
 import CodesController from '../controllers/CodesController';
 import UpdateValidateCodeController from '../controllers/UpdateValidateCodeController';
 import UpdateUnavailableAtController from '../controllers/UpdateUnavailableAtController';
-import CreateBoughtCodeController from '../../bougth-codes/controllers/CreateBoughtCodeController';
+import BoughtCodesController from '../../bought-codes/controllers/BoughtCodesController';
 
 const codesRoutes = Router();
 
@@ -47,7 +47,7 @@ const updateUnavailableAtController = new UpdateUnavailableAtController(
   databaseRepository,
 );
 
-const createBoughtCodeController = new CreateBoughtCodeController(
+const boughtCodesController = new BoughtCodesController(
   usersRepository,
   boughtCodesRepository,
   codesRepository,
@@ -99,7 +99,7 @@ codesRoutes.patch(
 codesRoutes.post(
   '/:codeId/buy',
   [ensureAuthentication, validateParams(createBoughtCodeSchema)],
-  createBoughtCodeController.store,
+  boughtCodesController.store,
 );
 
 export default codesRoutes;

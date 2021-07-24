@@ -8,8 +8,9 @@ import IBoughtCodesRepository from '../repositories/IBoughtCodesRepository';
 import IUsersRepository from '../../users/repositories/IUsersRepository';
 
 import CreateBoughtCodeSevice from '../services/CreateBoughtCodeSevice';
+import RemoveBoughtCodeService from '../services/RemoveBoughtCodeService';
 
-class CreateBoughtCodeController {
+class BoughtCodesController {
   private usersRepository: IUsersRepository;
 
   private codesRepository: ICodesRepository;
@@ -30,6 +31,28 @@ class CreateBoughtCodeController {
     this.databaseRepository = databaseRepository;
 
     this.store = this.store.bind(this);
+    this.destroy = this.destroy.bind(this);
+  }
+
+  async destroy(
+    req: Request,
+    res: Response,
+  ): Promise<Response<any, Record<string, any>>> {
+    const { boughtCodeId } = req.params;
+    const userId = req.user?.id;
+
+    const removeBoughtCodeService = new RemoveBoughtCodeService(
+      this.usersRepository,
+      this.boughtCodesRepository,
+      this.databaseRepository,
+    );
+
+    const response = await removeBoughtCodeService.execute({
+      boughtCodeId,
+      userId,
+    });
+
+    return res.status(HTTPStatusCode.NO_CONTENT).json(response);
   }
 
   async store(
@@ -55,4 +78,4 @@ class CreateBoughtCodeController {
   }
 }
 
-export default CreateBoughtCodeController;
+export default BoughtCodesController;
