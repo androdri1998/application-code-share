@@ -9,6 +9,7 @@ import IUsersRepository from '../../users/repositories/IUsersRepository';
 
 import CreateBoughtCodeSevice from '../services/CreateBoughtCodeSevice';
 import RemoveBoughtCodeService from '../services/RemoveBoughtCodeService';
+import GetBoughtCodeService from '../services/GetBoughtCodeService';
 
 class BoughtCodesController {
   private usersRepository: IUsersRepository;
@@ -32,6 +33,25 @@ class BoughtCodesController {
 
     this.store = this.store.bind(this);
     this.destroy = this.destroy.bind(this);
+    this.get = this.get.bind(this);
+  }
+
+  async get(
+    req: Request,
+    res: Response,
+  ): Promise<Response<any, Record<string, any>>> {
+    const { boughtCodeId } = req.params;
+
+    const getBoughtCodeService = new GetBoughtCodeService(
+      this.boughtCodesRepository,
+      this.databaseRepository,
+    );
+
+    const response = await getBoughtCodeService.execute({
+      boughtCodeId,
+    });
+
+    return res.status(HTTPStatusCode.OK).json(response);
   }
 
   async destroy(

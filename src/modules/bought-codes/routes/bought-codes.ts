@@ -7,7 +7,10 @@ import BoughtCodesRepository from '../repositories/implementations/BoughtCodesRe
 import database from '../../app/db';
 import validateParams from '../../app/middlewares/validate-params';
 import ensureAuthentication from '../../users/middlewares/ensureAuthentication';
-import { removeBoughtCodeSchema } from '../schemas/bought-codes.schema';
+import {
+  removeBoughtCodeSchema,
+  getBoughtCodeSchema,
+} from '../schemas/bought-codes.schema';
 import BoughtCodesController from '../controllers/BoughtCodesController';
 
 const codesRoutes = Router();
@@ -22,6 +25,12 @@ const boughtCodesController = new BoughtCodesController(
   boughtCodesRepository,
   codesRepository,
   databaseRepository,
+);
+
+codesRoutes.get(
+  '/:boughtCodeId',
+  [ensureAuthentication, validateParams(getBoughtCodeSchema)],
+  boughtCodesController.get,
 );
 
 codesRoutes.delete(
