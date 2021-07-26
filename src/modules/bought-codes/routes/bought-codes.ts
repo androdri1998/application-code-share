@@ -10,8 +10,10 @@ import ensureAuthentication from '../../users/middlewares/ensureAuthentication';
 import {
   removeBoughtCodeSchema,
   getBoughtCodeSchema,
+  getBoughtCodesByBuyerSchema,
 } from '../schemas/bought-codes.schema';
 import BoughtCodesController from '../controllers/BoughtCodesController';
+import GetBoughtCodesByBuyerController from '../controllers/GetBoughtCodesByBuyerController';
 
 const codesRoutes = Router();
 
@@ -25,6 +27,18 @@ const boughtCodesController = new BoughtCodesController(
   boughtCodesRepository,
   codesRepository,
   databaseRepository,
+);
+
+const getBoughtCodesByBuyerController = new GetBoughtCodesByBuyerController(
+  usersRepository,
+  boughtCodesRepository,
+  databaseRepository,
+);
+
+codesRoutes.get(
+  '/bougth',
+  [ensureAuthentication, validateParams(getBoughtCodesByBuyerSchema)],
+  getBoughtCodesByBuyerController.index,
 );
 
 codesRoutes.get(

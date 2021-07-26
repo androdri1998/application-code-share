@@ -93,7 +93,7 @@ class BoughtCodesRepository implements IBoughtCodesRepository {
     const values = [buyerId, limit, offset];
     const response = await this.database.query(
       `select *
-        from codes
+        from bought_codes
         where buyer=$1
         limit $2 offset $3;`,
       values,
@@ -111,7 +111,7 @@ class BoughtCodesRepository implements IBoughtCodesRepository {
     const values = [sellerId, limit, offset];
     const response = await this.database.query(
       `select *
-        from codes
+        from bought_codes
         where seller=$1
         limit $2 offset $3;`,
       values,
