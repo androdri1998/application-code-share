@@ -31,3 +31,28 @@ create table codes(
 	updated_at timestamp,
 	foreign key(user_id) references users(id)
 )
+
+create table bought_codes(
+	id varchar(50) primary key,
+	buyer varchar(50) not null,
+	seller varchar(50) not null,
+	code_id varchar(50) not null,
+	code text not null,
+	created_at timestamp not null,
+	unavailable_at timestamp,
+	updated_at timestamp,
+	foreign key(buyer) references users(id),
+	foreign key(seller) references users(id),
+	foreign key(code_id) references codes(id)
+)
+
+create table comments_codes(
+	id varchar(50) primary key,
+	author_id varchar(50) not null,
+	code_id varchar(50) not null,
+	content_comment text not null,
+	created_at timestamp not null,
+	updated_at timestamp,
+	foreign key(author_id) references users(id),
+	foreign key(code_id) references codes(id)
+)
