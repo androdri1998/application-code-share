@@ -20,6 +20,13 @@ export const getBoughtCodesByBuyerSchema = {
   }),
 };
 
+export const getBoughtCodesBySellerSchema = {
+  query: joi.object({
+    limit: joi.number().integer().default(10),
+    page: joi.number().integer().default(0),
+  }),
+};
+
 export const removeBoughtCodeSchema = {
   params: joi.object({
     boughtCodeId: joi.string().uuid().required(),

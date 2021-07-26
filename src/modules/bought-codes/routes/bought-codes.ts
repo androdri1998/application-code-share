@@ -11,9 +11,11 @@ import {
   removeBoughtCodeSchema,
   getBoughtCodeSchema,
   getBoughtCodesByBuyerSchema,
+  getBoughtCodesBySellerSchema,
 } from '../schemas/bought-codes.schema';
 import BoughtCodesController from '../controllers/BoughtCodesController';
 import GetBoughtCodesByBuyerController from '../controllers/GetBoughtCodesByBuyerController';
+import GetBoughtCodesBySellerController from '../controllers/GetBoughtCodesBySellerController';
 
 const codesRoutes = Router();
 
@@ -35,10 +37,22 @@ const getBoughtCodesByBuyerController = new GetBoughtCodesByBuyerController(
   databaseRepository,
 );
 
+const getBoughtCodesBySellerController = new GetBoughtCodesBySellerController(
+  usersRepository,
+  boughtCodesRepository,
+  databaseRepository,
+);
+
 codesRoutes.get(
   '/bougth',
   [ensureAuthentication, validateParams(getBoughtCodesByBuyerSchema)],
   getBoughtCodesByBuyerController.index,
+);
+
+codesRoutes.get(
+  '/sold',
+  [ensureAuthentication, validateParams(getBoughtCodesBySellerSchema)],
+  getBoughtCodesBySellerController.index,
 );
 
 codesRoutes.get(
