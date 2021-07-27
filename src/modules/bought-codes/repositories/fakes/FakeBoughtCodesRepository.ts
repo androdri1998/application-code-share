@@ -53,10 +53,10 @@ class FakeBoughtCodesRepository implements IBoughtCodesRepository {
   async removeBoughtCode({
     boughtCodeId,
   }: RemoveBoughtCodeDTO): Promise<boolean> {
-    const newCodes = this.boughtCodes.filter(
+    const newBoughtCodes = this.boughtCodes.filter(
       boughtCode => boughtCode.id !== boughtCodeId,
     );
-    this.boughtCodes = newCodes;
+    this.boughtCodes = newBoughtCodes;
 
     const isDeleted = true;
     return isDeleted;

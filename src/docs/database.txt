@@ -46,7 +46,7 @@ create table bought_codes(
 	foreign key(code_id) references codes(id)
 )
 
-create table comments_codes(
+create table comment_codes(
 	id varchar(50) primary key,
 	author_id varchar(50) not null,
 	code_id varchar(50) not null,
