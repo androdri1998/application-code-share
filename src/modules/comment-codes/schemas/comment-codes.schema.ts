@@ -26,3 +26,13 @@ export const updateCommentCodeSchema = {
     contentComment: joi.string().required(),
   }),
 };
+
+export const listCommentCodeSchema = {
+  params: joi.object({
+    codeId: joi.string().uuid().required(),
+  }),
+  query: joi.object({
+    limit: joi.number().integer(),
+    page: joi.number().integer(),
+  }),
+};

@@ -22,6 +22,7 @@ import {
   createCommentCodeSchema,
   removeCommentCodeSchema,
   updateCommentCodeSchema,
+  listCommentCodeSchema,
 } from '../../comment-codes/schemas/comment-codes.schema';
 import CodesController from '../controllers/CodesController';
 import UpdateValidateCodeController from '../controllers/UpdateValidateCodeController';
@@ -121,6 +122,12 @@ codesRoutes.post(
   '/:codeId/comments',
   [ensureAuthentication, validateParams(createCommentCodeSchema)],
   commentCodesController.store,
+);
+
+codesRoutes.get(
+  '/:codeId/comments',
+  [ensureAuthentication, validateParams(listCommentCodeSchema)],
+  commentCodesController.index,
 );
 
 codesRoutes.delete(
