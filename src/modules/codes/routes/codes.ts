@@ -4,6 +4,7 @@ import UsersRepository from '../../users/repositories/implementations/UsersRepos
 import CodesRepository from '../repositories/Implementations/CodesRepository';
 import DatabaseRepository from '../../app/repositories/implementations/DatabaseRepository';
 import BoughtCodesRepository from '../../bought-codes/repositories/implementations/BoughtCodesRepository';
+import CommentCodesRepository from '../../comment-codes/repositories/implementations/CommentCodesRepository';
 import database from '../../app/db';
 import validateParams from '../../app/middlewares/validate-params';
 import ensureAuthentication from '../../users/middlewares/ensureAuthentication';
@@ -17,9 +18,11 @@ import {
   updateUnavailableAtCodeSchema,
 } from '../schemas/codes.schema';
 import { createBoughtCodeSchema } from '../../bought-codes/schemas/bought-codes.schema';
+import { createCommentCodeSchema } from '../../comment-codes/schemas/comment-codes.schema';
 import CodesController from '../controllers/CodesController';
 import UpdateValidateCodeController from '../controllers/UpdateValidateCodeController';
 import UpdateUnavailableAtController from '../controllers/UpdateUnavailableAtController';
+import CommentCodesController from '../../comment-codes/controllers/CommentCodesController';
 import BoughtCodesController from '../../bought-codes/controllers/BoughtCodesController';
 
 const codesRoutes = Router();
@@ -27,6 +30,7 @@ const codesRoutes = Router();
 const usersRepository = new UsersRepository(database);
 const codesRepository = new CodesRepository(database);
 const databaseRepository = new DatabaseRepository(database);
+const commentCodesRepository = new CommentCodesRepository(database);
 const boughtCodesRepository = new BoughtCodesRepository(database);
 
 const codesController = new CodesController(
@@ -50,6 +54,13 @@ const updateUnavailableAtController = new UpdateUnavailableAtController(
 const boughtCodesController = new BoughtCodesController(
   usersRepository,
   boughtCodesRepository,
+  codesRepository,
+  databaseRepository,
+);
+
+const commentCodesController = new CommentCodesController(
+  usersRepository,
+  commentCodesRepository,
   codesRepository,
   databaseRepository,
 );
@@ -100,6 +111,12 @@ codesRoutes.post(
   '/:codeId/buy',
   [ensureAuthentication, validateParams(createBoughtCodeSchema)],
   boughtCodesController.store,
+);
+
+codesRoutes.post(
+  '/:codeId/comments',
+  [ensureAuthentication, validateParams(createCommentCodeSchema)],
+  commentCodesController.store,
 );
 
 export default codesRoutes;

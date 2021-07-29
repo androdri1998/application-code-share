@@ -85,7 +85,7 @@ class FakeCommentCodesRepository implements ICommentCodesRepository {
 
   async findCommentCodeById({
     commentCodeId,
-  }: FindCommentCodeByIdDTO): Promise<CommentCode> {
+  }: FindCommentCodeByIdDTO): Promise<CommentCode | null> {
     const commentCodeFound = this.commentCodes.find(
       commentCode => commentCode.id === commentCodeId,
     );
