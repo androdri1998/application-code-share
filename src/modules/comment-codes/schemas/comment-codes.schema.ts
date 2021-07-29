@@ -9,3 +9,10 @@ export const createCommentCodeSchema = {
     contentComment: joi.string().required(),
   }),
 };
+
+export const removeCommentCodeSchema = {
+  params: joi.object({
+    codeId: joi.string().uuid().required(),
+    commentCodeId: joi.string().uuid().required(),
+  }),
+};

@@ -8,6 +8,7 @@ import ICommentCodesRepository from '../repositories/ICommentCodesRepository';
 import IUsersRepository from '../../users/repositories/IUsersRepository';
 
 import CreateCommentCodeService from '../services/CreateCommentCodeService';
+import RemoveCommentCodeService from '../services/RemoveCommentCodeService';
 
 class CommentCodesController {
   private usersRepository: IUsersRepository;
@@ -30,6 +31,7 @@ class CommentCodesController {
     this.databaseRepository = databaseRepository;
 
     this.store = this.store.bind(this);
+    this.destroy = this.destroy.bind(this);
   }
 
   async store(
@@ -54,6 +56,27 @@ class CommentCodesController {
     });
 
     return res.status(HTTPStatusCode.CREATED).json(response);
+  }
+
+  async destroy(
+    req: Request,
+    res: Response,
+  ): Promise<Response<any, Record<string, any>>> {
+    const { commentCodeId } = req.params;
+    const userId = req.user?.id;
+
+    const removeCommentCodeService = new RemoveCommentCodeService(
+      this.usersRepository,
+      this.commentCodesRepository,
+      this.databaseRepository,
+    );
+
+    const response = await removeCommentCodeService.execute({
+      commentCodeId,
+      authorId: userId,
+    });
+
+    return res.status(HTTPStatusCode.NO_CONTENT).json(response);
   }
 }
 

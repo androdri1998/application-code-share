@@ -18,7 +18,10 @@ import {
   updateUnavailableAtCodeSchema,
 } from '../schemas/codes.schema';
 import { createBoughtCodeSchema } from '../../bought-codes/schemas/bought-codes.schema';
-import { createCommentCodeSchema } from '../../comment-codes/schemas/comment-codes.schema';
+import {
+  createCommentCodeSchema,
+  removeCommentCodeSchema,
+} from '../../comment-codes/schemas/comment-codes.schema';
 import CodesController from '../controllers/CodesController';
 import UpdateValidateCodeController from '../controllers/UpdateValidateCodeController';
 import UpdateUnavailableAtController from '../controllers/UpdateUnavailableAtController';
@@ -117,6 +120,12 @@ codesRoutes.post(
   '/:codeId/comments',
   [ensureAuthentication, validateParams(createCommentCodeSchema)],
   commentCodesController.store,
+);
+
+codesRoutes.delete(
+  '/:codeId/comments/:commentCodeId',
+  [ensureAuthentication, validateParams(removeCommentCodeSchema)],
+  commentCodesController.destroy,
 );
 
 export default codesRoutes;
