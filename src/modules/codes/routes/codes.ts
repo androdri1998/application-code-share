@@ -21,6 +21,7 @@ import { createBoughtCodeSchema } from '../../bought-codes/schemas/bought-codes.
 import {
   createCommentCodeSchema,
   removeCommentCodeSchema,
+  updateCommentCodeSchema,
 } from '../../comment-codes/schemas/comment-codes.schema';
 import CodesController from '../controllers/CodesController';
 import UpdateValidateCodeController from '../controllers/UpdateValidateCodeController';
@@ -126,6 +127,12 @@ codesRoutes.delete(
   '/:codeId/comments/:commentCodeId',
   [ensureAuthentication, validateParams(removeCommentCodeSchema)],
   commentCodesController.destroy,
+);
+
+codesRoutes.patch(
+  '/:codeId/comments/:commentCodeId',
+  [ensureAuthentication, validateParams(updateCommentCodeSchema)],
+  commentCodesController.update,
 );
 
 export default codesRoutes;

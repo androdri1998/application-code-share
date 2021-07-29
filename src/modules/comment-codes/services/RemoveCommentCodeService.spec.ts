@@ -71,7 +71,7 @@ describe('RemoveCommentCodeService', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should not be able to create a comment code with a non existent comment code', async () => {
+  it('should not be able to remove a comment code with a non existent comment code', async () => {
     const userCreated = await fakeUsersRepository.createUser({
       username: 'some name',
       description: 'description',

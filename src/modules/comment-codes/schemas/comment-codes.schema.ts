@@ -16,3 +16,13 @@ export const removeCommentCodeSchema = {
     commentCodeId: joi.string().uuid().required(),
   }),
 };
+
+export const updateCommentCodeSchema = {
+  params: joi.object({
+    codeId: joi.string().uuid().required(),
+    commentCodeId: joi.string().uuid().required(),
+  }),
+  body: joi.object({
+    contentComment: joi.string().required(),
+  }),
+};
