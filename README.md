@@ -1,4 +1,4 @@
-# application-code-sellers
+# application-code-share
 It's a simple back-end application where the user can to register and to share app's codes or marketplace's coupons with another users.  
 That API Rest application did was build with technologies as JavaScript at Node.js plataform, the code was wrote in TypeScript using the microframework express. 
   
